@@ -24,12 +24,16 @@ DEBUG = True
 
 
 class Client(object):
+    """
+    Client opens up connections between Python and RiotGames' API for League of Legends. It maps Json Objects from Riot
+    into custom Python classes for easier management and use.
+    """
     def __init__(self, username, region: str, api_key: str, rate_limit: int=10):
-        self.name = username
-        self.region = region
-        self.key = api_key
-        self.player = None
-        self.rate_limit = rate_limit
+        self.__name = username
+        self.__region = region
+        self.__key = api_key
+        self.__player = None
+        self.__rate_limit = rate_limit
         self.__search_for_player()
 
     @staticmethod
@@ -41,18 +45,33 @@ class Client(object):
         return True
 
     def __search_for_player(self):
-        payload = {"api_key": self.key}
-        url = (LolUrls.base + LolUrls.player_by_name).format(region=self.region, summonerNames=self.name)
+        payload = {"api_key": self.__key}
+        url = (LolUrls.base + LolUrls.player_by_name).format(region=self.__region, summonerNames=self.__name)
         r = requests.get(url, params=payload)
-        self.__api_service_check(r)
+        if r.status_code == 404:
+            raise Exception("Player {0} not found in region {1}", self.__name, self.__region)
+        if r.status_code == 429:
+            time.sleep(1)
+            self.__search_for_player()
+        if not self.__api_service_check(r):
+            self.__player = None
 
         data = r.json()
-        player = Player.Player(data[self.name])
-        self.player = player
+        player = Player.Player(data[self.__name])
+        self.__player = player
+
+    def change_search_parameters(self, username=None, region: str=None):
+        changed_region = False
+        if region:
+            self.__region = region
+            changed_region = True
+        if username and (username != self.__name or changed_region):
+            self.__name = username
+            self.__search_for_player()
 
     def ranked_match_history(self, skip: int=0, include_timeline: bool=True):
-        payload = {"api_key": self.key, "beginIndex": skip}
-        url = (LolUrls.base + LolUrls.ranked_match_history).format(region=self.region, summonerId=self.player.id)
+        payload = {"api_key": self.__key, "beginIndex": skip}
+        url = (LolUrls.base + LolUrls.ranked_match_history).format(region=self.__region, summonerId=self.__player.id)
         r = requests.get(url, params=payload)
         if r.status_code == 429:
             time.sleep(1)
@@ -72,8 +91,8 @@ class Client(object):
         return matches
 
     def __match_details(self, match_id: int, include_timeline):
-        payload = {"api_key": self.key, "includeTimeline": include_timeline}
-        url = (LolUrls.base + LolUrls.match_details).format(region=self.region, matchId=match_id)
+        payload = {"api_key": self.__key, "includeTimeline": include_timeline}
+        url = (LolUrls.base + LolUrls.match_details).format(region=self.__region, matchId=match_id)
         r = requests.get(url, params=payload)
         if r.status_code == 429:
             time.sleep(1)
@@ -85,8 +104,8 @@ class Client(object):
         return data
 
     def recent_match_history(self, include_timeline: bool=False):
-        payload = {"api_key": self.key}
-        url = (LolUrls.base + LolUrls.recent_match_history).format(region=self.region, summonerId=self.player.id)
+        payload = {"api_key": self.__key}
+        url = (LolUrls.base + LolUrls.recent_match_history).format(region=self.__region, summonerId=self.__player.id)
         r = requests.get(url, params=payload)
         if r.status_code == 429:
             time.sleep(1)
