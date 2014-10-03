@@ -36,8 +36,16 @@ class Match(object):
         except KeyError:
             self.timeline = None
         self.participant_ids = json_data["participantIdentities"]
-        self.participants = [Participant(participant, player) for participant, player in
-                             zip(json_data["participants"], self.participant_ids)]
+        self.participants = [
+            Participant(self.__match_participant_id(participant_id["participantId"], json_data["participants"]),
+                        participant_id) for participant_id in self.participant_ids]
 
         self.match_details = json_data
+
+    @staticmethod
+    def __match_participant_id(participant_id, participants):
+        for participant in participants:
+            if participant["participantId"] == participant_id:
+                return participant
+        return None
 
