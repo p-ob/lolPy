@@ -1,3 +1,4 @@
+import copy
 from src.riot.Participant import Participant
 
 __author__ = 'Patrick O\'Brien'
@@ -36,16 +37,18 @@ class Match(object):
         except KeyError:
             self.timeline = None
         self.participant_ids = json_data["participantIdentities"]
+        participants = copy.deepcopy(json_data["participants"])
         self.participants = [
-            Participant(self.__match_participant_id(participant_id["participantId"], json_data["participants"]),
+            Participant(self.__find_participant(participant_id["participantId"], participants),
                         participant_id) for participant_id in self.participant_ids]
 
         self.match_details = json_data
 
     @staticmethod
-    def __match_participant_id(participant_id, participants):
+    def __find_participant(participant_id: int, participants: list):
         for participant in participants:
             if participant["participantId"] == participant_id:
+                participants.remove(participant)
                 return participant
         return None
 
