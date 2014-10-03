@@ -17,8 +17,8 @@ __author__ = 'Patrick O\'Brien'
 '''
 import requests
 import time
-from src.lolApi.Constants import *
-from src.lolApi import *
+from src.riot.Constants import *
+from src.riot import *
 
 DEBUG = True
 
@@ -29,12 +29,23 @@ class Client(object):
     into custom Python classes for easier management and use.
     """
     def __init__(self, username, region: str, api_key: str, rate_limit: int=10):
+        self.__check_api_key(api_key)
         self.__name = username
         self.__region = region
         self.__key = api_key
         self.__player = None
         self.__rate_limit = rate_limit
         self.__search_for_player()
+
+    def __check_api_key(self, api_key):
+        payload = {"api_key": api_key}
+        url = (LolUrls.base + LolUrls.player_by_name).format(region='na', summonerNames='drunk7irishman')
+        r = requests.get(url, params=payload)
+        if r.status_code == 401:
+            raise Exception("Api key is not recognized by RiotGames.")
+        if r.status_code == 429:
+            time.sleep(1)
+            self.__check_api_key(api_key)
 
     @staticmethod
     def __api_service_check(request):

@@ -1,4 +1,4 @@
-from src.lolApi.Participant import Participant
+from src.riot.Participant import Participant
 
 __author__ = 'Patrick O\'Brien'
 ''' COPYRIGHT 2014
