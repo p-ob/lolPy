@@ -1,4 +1,4 @@
-from enum import Enum
+from enum import IntEnum
 
 __author__ = 'Patrick O\'Brien'
 ''' COPYRIGHT 2014
@@ -19,8 +19,9 @@ __author__ = 'Patrick O\'Brien'
 '''
 
 
-class RiotException(Enum):
-    Good = 200  # NoException
+class RiotException(IntEnum):
+    NoException = 200
+    Good = 200  # NoException is more "correct" for this Enum, but the status message returned by Riot is Good
     BadRequest = 400
     AccessDenied = 401
     NotFound = 404

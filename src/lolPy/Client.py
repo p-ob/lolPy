@@ -50,7 +50,7 @@ class Client(object):
 
     @staticmethod
     def __api_service_check(request):
-        if RiotException(request.status_code) != RiotException.Good:
+        if request.status_code != RiotException.NoException:
             if DEBUG:
                 raise Exception('{0}: {1}'.format(request.status_code, request.reason))
             return False
@@ -60,9 +60,9 @@ class Client(object):
         payload = {"api_key": self.__key}
         url = (urls.base + urls.player_by_name).format(region=self.__region, summonerNames=self.__name)
         r = requests.get(url, params=payload)
-        if RiotException(r.status_code) == RiotException.NotFound:
+        if r.status_code == RiotException.NotFound:
             raise Exception("Player {0} not found in region {1}", self.__name, self.__region)
-        if RiotException(r.status_code) == RiotException.RateLimitExceeded:
+        if r.status_code == RiotException.RateLimitExceeded:
             time.sleep(1)
             self.__search_for_player()
         if not self.__api_service_check(r):
@@ -74,7 +74,7 @@ class Client(object):
 
     def change_search_parameters(self, username=None, region: str=None):
         changed_region = False
-        if region:
+        if region and region != self.__region:
             self.__region = region
             changed_region = True
         if username and (username != self.__name or changed_region):
@@ -85,7 +85,7 @@ class Client(object):
         payload = {"api_key": self.__key, "beginIndex": skip}
         url = (urls.base + urls.ranked_match_history).format(region=self.__region, summonerId=self.__player.id)
         r = requests.get(url, params=payload)
-        if RiotException(r.status_code) == RiotException.RateLimitExceeded:
+        if r.status_code == RiotException.RateLimitExceeded:
             time.sleep(1)
             return self.ranked_match_history()
         if not self.__api_service_check(r):
@@ -106,7 +106,7 @@ class Client(object):
         payload = {"api_key": self.__key, "includeTimeline": include_timeline}
         url = (urls.base + urls.match_details).format(region=self.__region, matchId=match_id)
         r = requests.get(url, params=payload)
-        if RiotException(r.status_code) == RiotException.RateLimitExceeded:
+        if r.status_code == RiotException.RateLimitExceeded:
             time.sleep(1)
             return self.__match_details(match_id, include_timeline)
         if not self.__api_service_check(r):
@@ -119,7 +119,7 @@ class Client(object):
         payload = {"api_key": self.__key}
         url = (urls.base + urls.recent_match_history).format(region=self.__region, summonerId=self.__player.id)
         r = requests.get(url, params=payload)
-        if RiotException(r.status_code) == RiotException.RateLimitExceeded:
+        if r.status_code == RiotException.RateLimitExceeded:
             time.sleep(1)
             return self.recent_match_history()
         if not self.__api_service_check(r):
