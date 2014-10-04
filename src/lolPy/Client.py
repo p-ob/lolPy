@@ -29,13 +29,12 @@ class Client(object):
     Client opens up connections between Python and RiotGames' API for League of Legends. It maps Json Objects from Riot
     into custom Python classes for easier management and use.
     """
-    def __init__(self, username, region: str, api_key: str, rate_limit: int=10):
+    def __init__(self, username, region: str, api_key: str):
         self.__check_api_key(api_key)
         self.__name = username
         self.__region = region
         self.__key = api_key
         self.__player = None
-        self.__rate_limit = rate_limit
         self.__search_for_player()
 
     def __check_api_key(self, api_key):
@@ -67,6 +66,7 @@ class Client(object):
             self.__search_for_player()
         if not self.__api_service_check(r):
             self.__player = None
+            return
 
         data = r.json()
         player = Player.Player(data[self.__name])
@@ -89,7 +89,7 @@ class Client(object):
             time.sleep(1)
             return self.ranked_match_history()
         if not self.__api_service_check(r):
-            return {}
+            return []
 
         data = r.json()
 
@@ -110,7 +110,7 @@ class Client(object):
             time.sleep(1)
             return self.__match_details(match_id, include_timeline)
         if not self.__api_service_check(r):
-            return {}
+            return []
 
         data = r.json()
         return data
@@ -123,7 +123,7 @@ class Client(object):
             time.sleep(1)
             return self.recent_match_history()
         if not self.__api_service_check(r):
-            return {}
+            return []
 
         data = r.json()
 
