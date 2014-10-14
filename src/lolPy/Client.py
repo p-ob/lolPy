@@ -41,9 +41,9 @@ class Client(object):
         payload = {"api_key": api_key}
         url = (urls.base + urls.player_by_name).format(region='na', summonerNames='drunk7irishman')
         r = requests.get(url, params=payload)
-        if RiotException(r.status_code) == RiotException.AccessDenied:
+        if r.status_code == RiotException.AccessDenied:
             raise Exception("Api key is not recognized by RiotGames.")
-        if RiotException(r.status_code) == RiotException.RateLimitExceeded:
+        if r.status_code == RiotException.RateLimitExceeded:
             time.sleep(1)
             self.__check_api_key(api_key)
 

@@ -17,10 +17,10 @@ __author__ = 'Patrick O\'Brien'
 '''
 from src.lolPy.Client import Client
 
-with open("other\\key.txt") as f:
+with open("key.txt") as f:
     key = f.read()
 
-client = Client("ohsnap62", "na", key)
+client = Client("drunk7irishman", "na", key)
 
 match_history = client.ranked_match_history()
 
