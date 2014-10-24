@@ -17,4 +17,5 @@ __author__ = 'Patrick O\'Brien'
 '''
 
 __all__ = ["Player", "Constants", "Match", "Participant", "ParticipantStats",
-           "Timeline", "ParticipantTimeline", "Rune", "Mastery", "Match"]
+           "Timeline", "ParticipantTimeline", "Rune", "Mastery", "Match", "RankedStats",
+           "ChampionStats", "SummaryStats"]

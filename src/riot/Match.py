@@ -1,6 +1,3 @@
-import copy
-from src.riot.Participant import Participant
-
 __author__ = 'Patrick O\'Brien'
 ''' COPYRIGHT 2014
     This file is part of lolPy.
@@ -18,6 +15,8 @@ __author__ = 'Patrick O\'Brien'
     You should have received a copy of the GNU General Public License
     along with lolPy.  If not, see <http://www.gnu.org/licenses/>.
 '''
+import copy
+from src.riot.Participant import Participant
 
 
 class Match(object):

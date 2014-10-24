@@ -22,9 +22,6 @@ with open("key.txt") as f:
 
 client = Client("drunk7irishman", "na", key)
 
-match_history = client.ranked_match_history()
-
-for x in match_history:
-    print(x.participants)
+stats = client.summary_stats()
 
 me = 25886496

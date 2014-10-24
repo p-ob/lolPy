@@ -15,16 +15,8 @@ __author__ = 'Patrick O\'Brien'
     You should have received a copy of the GNU General Public License
     along with lolPy.  If not, see <http://www.gnu.org/licenses/>.
 '''
-from enum import IntEnum
 
 
-class RiotException(IntEnum):
-    NoException = 200
-    Good = 200  # NoException is more "correct" for this Enum, but the status message returned by Riot is "Good"
-    BadRequest = 400
-    AccessDenied = 401
-    NotFound = 404
-    RateLimitExceeded = 429
-    InternalServerError = 500
-    ServiceUnavailable = 503
-
+class ChampionStats(object):
+    def __init__(self, json_data: dict):
+        pass

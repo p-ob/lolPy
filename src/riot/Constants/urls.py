@@ -26,3 +26,7 @@ ranked_match_history = "api/lol/{region}/v2.2/matchhistory/{summonerId}"
 match_details = "/api/lol/{region}/v2.2/match/{matchId}"
 
 recent_match_history = "/api/lol/{region}/v1.3/game/by-summoner/{summonerId}/recent"
+
+ranked_stats = "/api/lol/{region}/v1.3/stats/by-summoner/{summonerId}/ranked"
+
+general_stats = "/api/lol/{region}/v1.3/stats/by-summoner/{summonerId}/summary"
