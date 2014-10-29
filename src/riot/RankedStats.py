@@ -15,10 +15,11 @@ __author__ = 'Patrick O\'Brien'
     You should have received a copy of the GNU General Public License
     along with lolPy.  If not, see <http://www.gnu.org/licenses/>.
 '''
+from src.riot.ChampionStats import ChampionStats
 
 
 class RankedStats(object):
     def __init__(self, json_data: dict):
         self.champions = []
         for champ in json_data["champions"]:
-            self.champions += [champ]
+            self.champions += [ChampionStats(champ)]

@@ -146,11 +146,11 @@ class Client(object):
             time.sleep(1)
             return self.ranked_stats()
         if not self.__api_service_check(r):
-            return {}
+            return None
 
         data = r.json()
-
         stats = RankedStats.RankedStats(data)
+
         return stats
 
     def summary_stats(self):
@@ -166,8 +166,8 @@ class Client(object):
             return {}
 
         data = r.json()
-
         stats = []
         for stat in data["playerStatSummaries"]:
             stats += [SummaryStats.SummaryStats(stat)]
+
         return stats

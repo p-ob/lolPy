@@ -21,29 +21,15 @@ from src.riot.Player import Player
 class Participant(object):
     def __init__(self, json_data: dict, player: dict):
         self.champion_id = json_data["championId"]
-        try:
-            self.masteries = json_data["masteries"]
-        except KeyError:
-            self.masteries = None
+        self.masteries = json_data.get("masteries", None)
         self.participant_id = json_data["participantId"]
-        try:
-            self.runes = json_data["runes"]
-        except KeyError:
-            self.runes = None
+        self.runes = json_data.get("runes", None)
         self.spell_id1 = json_data["spell1Id"]
         self.spell_id2 = json_data["spell2Id"]
         self.stats = json_data["stats"]
         self.team_id = json_data["teamId"]
-        try:
-            self.timeline = json_data["timeline"]
-        except KeyError:
-            self.timeline = None
-        try:
-            self.player = Player(player["player"])
-            if self.player.id is None:
-                self.player = player["player"]
-        except KeyError:
-            self.player = player
+        self.timeline = json_data.get("timeline", None)
+        self.player = Player(player.get("player", player))
 
     def __repr__(self):
         try:

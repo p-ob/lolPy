@@ -22,6 +22,6 @@ with open("key.txt") as f:
 
 client = Client("drunk7irishman", "na", key)
 
-stats = client.summary_stats()
+stats = client.ranked_stats()
 
 me = 25886496

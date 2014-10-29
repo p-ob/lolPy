@@ -31,10 +31,7 @@ class Match(object):
         self.season = json_data["season"]
 
         self.teams = json_data["teams"]
-        try:
-            self.timeline = json_data["timeline"]
-        except KeyError:
-            self.timeline = None
+        self.timeline = json_data.get("timeline", None)
         self.participant_ids = json_data["participantIdentities"]
         participants = copy.deepcopy(json_data["participants"])
         self.participants = [
