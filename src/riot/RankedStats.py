@@ -21,5 +21,5 @@ from src.riot.ChampionStats import ChampionStats
 class RankedStats(object):
     def __init__(self, json_data: dict):
         self.champions = []
-        for champ in json_data["champions"]:
+        for champ in json_data.get("champions", []):
             self.champions += [ChampionStats(champ)]

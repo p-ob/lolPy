@@ -19,5 +19,17 @@ __author__ = 'Patrick O\'Brien'
 
 class ChampionStats(object):
     def __init__(self, json_data: dict):
-        self.id = json_data["id"]
-        stats = json_data["stats"]
+        self.id = json_data.get("id", -1)
+        self._name = None
+        stats = json_data.get("stats", {})
+
+    @property
+    def name(self):
+        return self._name
+
+    @name.setter
+    def name(self, name):
+        self._name = name
+
+    def __repr__(self):
+        return str(self._name)
