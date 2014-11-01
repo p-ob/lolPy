@@ -15,14 +15,7 @@ __author__ = 'Patrick O\'Brien'
     You should have received a copy of the GNU General Public License
     along with lolPy.  If not, see <http://www.gnu.org/licenses/>.
 '''
-from lolPy import Client
 
-
-with open("key.txt") as f:
-    key = f.read()
-
-client = Client.Client("drunk7irishman", "na", key)
-
-stats = client.ranked_stats()
-
-me = 25886496
+__all__ = ["Player", "Constants", "Match", "Participant", "ParticipantStats",
+           "Timeline", "ParticipantTimeline", "Rune", "Mastery", "Match", "RankedStats",
+           "ChampionStats", "SummaryStats", "ChampionData"]

@@ -15,14 +15,37 @@ __author__ = 'Patrick O\'Brien'
     You should have received a copy of the GNU General Public License
     along with lolPy.  If not, see <http://www.gnu.org/licenses/>.
 '''
-from lolPy import Client
+from enum import Enum
 
 
-with open("key.txt") as f:
-    key = f.read()
+class SummonersRiftBounds(Enum):
+    min_x = -650
+    min_y = -83
+    max_x = 14076
+    max_y = 14522
 
-client = Client.Client("drunk7irishman", "na", key)
 
-stats = client.ranked_stats()
+class MapNames(Enum):
+    SummonersRift = 1
+    SummonersRiftAutumn = 2
+    ProvingGrounds = 3
+    TwistedTreelineOld = 4
+    CrystalScar = 8
+    TwistedTreeline = 10
+    HowlingAbyss = 12
 
-me = 25886496
+
+class Mastery(Enum):
+    Invalid = 0
+
+
+class Rune(Enum):
+    Invalid = 0
+
+
+class Item(Enum):
+    Invalid = 0
+
+
+class Champion(Enum):
+    Invalid = 0

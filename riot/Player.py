@@ -15,14 +15,14 @@ __author__ = 'Patrick O\'Brien'
     You should have received a copy of the GNU General Public License
     along with lolPy.  If not, see <http://www.gnu.org/licenses/>.
 '''
-from lolPy import Client
 
 
-with open("key.txt") as f:
-    key = f.read()
+class Player(object):
+    def __init__(self, json_data: dict):
+        if not isinstance(json_data, dict):
+            raise TypeError("Input must be a dictionary")
+        self.name = json_data.get("name", json_data.get("summonerName", None))
+        self.id = json_data.get("id", json_data.get("summonerId", None))
 
-client = Client.Client("drunk7irishman", "na", key)
-
-stats = client.ranked_stats()
-
-me = 25886496
+    def __repr__(self):
+        return 'Name: {0}; Id: {1}'.format(self.name, self.id)

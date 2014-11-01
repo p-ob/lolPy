@@ -15,14 +15,8 @@ __author__ = 'Patrick O\'Brien'
     You should have received a copy of the GNU General Public License
     along with lolPy.  If not, see <http://www.gnu.org/licenses/>.
 '''
-from lolPy import Client
 
 
-with open("key.txt") as f:
-    key = f.read()
-
-client = Client.Client("drunk7irishman", "na", key)
-
-stats = client.ranked_stats()
-
-me = 25886496
+class Timeline(object):
+    def __init__(self, json_data: dict):
+        pass

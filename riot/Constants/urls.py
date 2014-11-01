@@ -15,14 +15,20 @@ __author__ = 'Patrick O\'Brien'
     You should have received a copy of the GNU General Public License
     along with lolPy.  If not, see <http://www.gnu.org/licenses/>.
 '''
-from lolPy import Client
 
 
-with open("key.txt") as f:
-    key = f.read()
+base = "https://na.api.pvp.net/"
 
-client = Client.Client("drunk7irishman", "na", key)
+player_by_name = "api/lol/{region}/v1.4/summoner/by-name/{summonerNames}"
 
-stats = client.ranked_stats()
+ranked_match_history = "api/lol/{region}/v2.2/matchhistory/{summonerId}"
 
-me = 25886496
+match_details = "/api/lol/{region}/v2.2/match/{matchId}"
+
+recent_match_history = "/api/lol/{region}/v1.3/game/by-summoner/{summonerId}/recent"
+
+ranked_stats = "/api/lol/{region}/v1.3/stats/by-summoner/{summonerId}/ranked"
+
+general_stats = "/api/lol/{region}/v1.3/stats/by-summoner/{summonerId}/summary"
+
+champion_data = "/api/lol/static-data/{region}/v1.2/champion"
