@@ -29,7 +29,7 @@ class Participant(object):
         self.stats = json_data["stats"]
         self.team_id = json_data["teamId"]
         self.timeline = json_data.get("timeline", None)
-        self.player = Player(player.get("player", player))
+        self.player = Player.Player(player.get("player", player))
 
     def __repr__(self):
         try:

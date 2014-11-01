@@ -23,6 +23,6 @@ with open("key.txt") as f:
 
 client = Client.Client("drunk7irishman", "na", key)
 
-stats = client.ranked_stats()
+stats = client.ranked_match_history()
 
 me = 25886496
