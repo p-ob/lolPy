@@ -1,3 +1,5 @@
+from lolPy import Client
+
 __author__ = 'Patrick O\'Brien'
 ''' COPYRIGHT 2014
     This file is part of lolPy.
@@ -16,19 +18,11 @@ __author__ = 'Patrick O\'Brien'
     along with lolPy.  If not, see <http://www.gnu.org/licenses/>.
 '''
 
+with open("key.txt") as f:
+    key = f.read()
 
-base = "https://na.api.pvp.net/"
+client = Client("drunk7irishman", "na", key)
 
-player_by_name = "api/lol/{region}/v1.4/summoner/by-name/{summonerNames}"
+stats = client.ranked_stats()
 
-ranked_match_history = "api/lol/{region}/v2.2/matchhistory/{summonerId}"
-
-match_details = "/api/lol/{region}/v2.2/match/{matchId}"
-
-recent_match_history = "/api/lol/{region}/v1.3/game/by-summoner/{summonerId}/recent"
-
-ranked_stats = "/api/lol/{region}/v1.3/stats/by-summoner/{summonerId}/ranked"
-
-general_stats = "/api/lol/{region}/v1.3/stats/by-summoner/{summonerId}/summary"
-
-champion_data = "/api/lol/static-data/{region}/v1.2/champion"
+me = 25886496
