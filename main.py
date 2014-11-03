@@ -15,6 +15,10 @@ __author__ = 'Patrick O\'Brien'
     You should have received a copy of the GNU General Public License
     along with lolPy.  If not, see <http://www.gnu.org/licenses/>.
 '''
+
+''' This file is simply for testing/development purposes only, as well as
+    to provide an example on how to use Client.
+'''
 import Client
 
 
