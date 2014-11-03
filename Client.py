@@ -41,7 +41,7 @@ class Client(object):
         self.__search_for_player()
 
     @property
-    def _champion_data(self):
+    def _champion_data(self) -> [ChampionData.ChampionData]:
         payload = {"api_key": self._key, "dataById": True}
         url = (urls.base + urls.champion_data).format(region=self._region)
 
@@ -49,8 +49,7 @@ class Client(object):
         if r.status_code == RiotException.RateLimitExceeded:
             time.sleep(1)
             return self._champion_data
-        if not self.__api_service_check(r):
-            return []
+        self.__api_service_check(r)
 
         data = r.json()
         raw_champs = data.get("data", {})
@@ -63,18 +62,15 @@ class Client(object):
     @staticmethod
     def __api_service_check(request):
         if request.status_code != RiotException.NoException:
-            if DEBUG:
-                raise Exception('{0}: {1}'.format(request.status_code, request.reason))
-            return False
-        return True
+            raise ClientException('{0}: {1}'.format(request.status_code, request.reason))
 
     def __check_api_key(self, api_key):
         payload = {"api_key": api_key}
         url = (urls.base + urls.player_by_name).format(region='na', summonerNames='drunk7irishman')
         r = requests.get(url, params=payload)
         if r.status_code == RiotException.AccessDenied:
-            raise Exception("Api key is not recognized by RiotGames." +
-                            "Check that your key is correct or visit https://developer.riotgames.com to receive one.")
+            raise ClientException("Api key is not recognized by RiotGames. Check that your key is correct or visit " +
+                                  "https://developer.riotgames.com to receive one.")
         if r.status_code == RiotException.RateLimitExceeded:
             time.sleep(1)
             self.__check_api_key(api_key)
@@ -84,13 +80,11 @@ class Client(object):
         url = (urls.base + urls.player_by_name).format(region=self._region, summonerNames=self._username)
         r = requests.get(url, params=payload)
         if r.status_code == RiotException.NotFound:
-            raise Exception("Player {0} not found in region {1}", self._username, self._region)
+            raise ClientException("Player {0} not found in region {1}", self._username, self._region)
         if r.status_code == RiotException.RateLimitExceeded:
             time.sleep(1)
             self.__search_for_player()
-        if not self.__api_service_check(r):
-            self._player = None
-            return
+        self.__api_service_check(r)
 
         data = r.json()
         player = Player.Player(data[self._username])
@@ -103,8 +97,7 @@ class Client(object):
         if r.status_code == RiotException.RateLimitExceeded:
             time.sleep(1)
             return self.__match_details(match_id, include_timeline)
-        if not self.__api_service_check(r):
-            return []
+        self.__api_service_check(r)
 
         data = r.json()
         return data
@@ -115,17 +108,16 @@ class Client(object):
             self._region = region if region else self._region
             self.__search_for_player()
 
-    def ranked_match_history(self, skip: int=0, include_timeline: bool=True):
+    def ranked_match_history(self, skip: int=0, include_timeline: bool=True) -> [Match.Match]:
         if self._player is None:
-            return []
+            raise ClientException("Player not defined")
         payload = {"api_key": self._key, "beginIndex": skip}
         url = (urls.base + urls.ranked_match_history).format(region=self._region, summonerId=self._player.id)
         r = requests.get(url, params=payload)
         if r.status_code == RiotException.RateLimitExceeded:
             time.sleep(1)
             return self.ranked_match_history()
-        if not self.__api_service_check(r):
-            return []
+        self.__api_service_check(r)
 
         data = r.json()
 
@@ -138,17 +130,16 @@ class Client(object):
 
         return matches
 
-    def recent_match_history(self, include_timeline: bool=False):
+    def recent_match_history(self, include_timeline: bool=False) -> [Match.Match]:
         if self._player is None:
-            return []
+            raise ClientException("Player not defined")
         payload = {"api_key": self._key}
         url = (urls.base + urls.recent_match_history).format(region=self._region, summonerId=self._player.id)
         r = requests.get(url, params=payload)
         if r.status_code == RiotException.RateLimitExceeded:
             time.sleep(1)
             return self.recent_match_history()
-        if not self.__api_service_check(r):
-            return []
+        self.__api_service_check(r)
 
         data = r.json()
 
@@ -160,17 +151,16 @@ class Client(object):
             matches += [Match.Match(match_id, self.__match_details(match_id, include_timeline))]
         return matches
 
-    def ranked_stats(self):
+    def ranked_stats(self) -> RankedStats.RankedStats:
         if self._player is None:
-            return []
+            raise ClientException("Player not defined")
         payload = {"api_key": self._key}
         url = (urls.base + urls.ranked_stats).format(region=self._region, summonerId=self._player.id)
         r = requests.get(url, params=payload)
         if r.status_code == RiotException.RateLimitExceeded:
             time.sleep(1)
             return self.ranked_stats()
-        if not self.__api_service_check(r):
-            return None
+        self.__api_service_check(r)
 
         data = r.json()
         stats = RankedStats.RankedStats(data)
@@ -185,17 +175,16 @@ class Client(object):
 
         return stats
 
-    def summary_stats(self):
+    def summary_stats(self) -> SummaryStats.SummaryStats:
         if self._player is None:
-            return []
+            raise ClientException("Player not defined.")
         payload = {"api_key": self._key}
         url = (urls.base + urls.general_stats).format(region=self._region, summonerId=self._player.id)
         r = requests.get(url, params=payload)
         if r.status_code == RiotException.RateLimitExceeded:
             time.sleep(1)
             return self.ranked_stats()
-        if not self.__api_service_check(r):
-            return {}
+        self.__api_service_check(r)
 
         data = r.json()
         stats = []
@@ -203,3 +192,7 @@ class Client(object):
             stats += [SummaryStats.SummaryStats(stat)]
 
         return stats
+
+
+class ClientException(Exception):
+    pass
