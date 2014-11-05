@@ -27,7 +27,7 @@ with open("key.txt") as f:
 
 client = Client.Client("drunk7irishman", "na", key)
 
-stats = client.recent_match_history()
+stats = client.ranked_match_history()
 
 for stat in stats:
     print(vars(stat))

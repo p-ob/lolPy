@@ -20,14 +20,14 @@ from riot import Player
 
 class Participant(object):
     def __init__(self, json_data: dict, player: dict):
-        self.champion_id = json_data["championId"]
+        self.champion_id = json_data.get("championId", None)
         self.masteries = json_data.get("masteries", None)
-        self.participant_id = json_data["participantId"]
+        self.participant_id = json_data.get("participantId", None)
         self.runes = json_data.get("runes", None)
-        self.spell_id1 = json_data["spell1Id"]
-        self.spell_id2 = json_data["spell2Id"]
-        self.stats = json_data["stats"]
-        self.team_id = json_data["teamId"]
+        self.spell_id1 = json_data.get("spell1Id", None)
+        self.spell_id2 = json_data.get("spell2Id", None)
+        self.stats = json_data.get("stats", None)
+        self.team_id = json_data.get("teamId", None)
         self.timeline = json_data.get("timeline", None)
         self.player = Player.Player(player.get("player", player))
 
@@ -36,4 +36,6 @@ class Participant(object):
             return '{0} - {1}'.format(self.participant_id, self.player) if not list(self.player) == [
                 "participantId"] else str(self.participant_id)
         except TypeError:
-            return '{0} - {1}'.format(self.player.id, self.player.name)
+            if self.player.id and self.player.name:
+                return '{0} - {1}'.format(self.player.id, self.player.name)
+        return str(vars(self))

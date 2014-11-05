@@ -23,23 +23,24 @@ from riot.Participant import Participant
 class Match(object):
     def __init__(self, match_id: int, json_data: dict):
         self.id = match_id
-        self.map_id = json_data["mapId"]
-        self.match_creation = json_data["matchCreation"]
-        self.match_duration = json_data["matchDuration"]
-        self.match_mode = json_data["matchMode"]
-        self.match_type = json_data["matchType"]
-        self.queue_type = json_data["queueType"]
-        self.season = json_data["season"]
+        self.map_id = json_data.get("mapId", None)
+        self.match_creation = json_data.get("matchCreation", None)
+        self.match_duration = json_data.get("matchDuration", None)
+        self.match_mode = json_data.get("matchMode", None)
+        self.match_type = json_data.get("matchType", None)
+        self.queue_type = json_data.get("queueType", None)
+        self.season = json_data.get("season", None)
 
-        self.teams = json_data["teams"]
+        self.teams = json_data.get("teams", None)
         self.timeline = json_data.get("timeline", None)
-        self.participant_ids = json_data["participantIdentities"]
-        participants = copy.deepcopy(json_data["participants"])
-        self.participants = [
-            Participant(self.__find_participant(participant_id["participantId"], participants),
-                        participant_id) for participant_id in self.participant_ids]
-
-        self.match_details = json_data
+        self.participant_ids = json_data.get("participantIdentities", None)
+        participants = copy.deepcopy(json_data.get("participants", {}))
+        if participants is not {}:
+            self.participants = [
+                Participant(self.__find_participant(participant_id["participantId"], participants),
+                            participant_id) for participant_id in self.participant_ids]
+        else:
+            self.participants = None
 
     @staticmethod
     def __find_participant(participant_id: int, participants: list):

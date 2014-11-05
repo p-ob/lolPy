@@ -20,9 +20,9 @@ from riot.AggregateStats import AggregateStats
 
 class SummaryStats(object):
     def __init__(self, json_data: dict):
-        self.stat_type = json_data["playerStatSummaryType"]
-        self.wins = json_data["wins"]
-        stats = json_data["aggregatedStats"]
+        self.stat_type = json_data.get("playerStatSummaryType", None)
+        self.wins = json_data.get("wins", None)
+        stats = json_data.get("aggregatedStats", {})
         self.stats = AggregateStats(stats)
 
     def __repr__(self):
