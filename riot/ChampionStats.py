@@ -20,7 +20,7 @@ from riot.AggregateStats import AggregateStats
 
 class ChampionStats(object):
     def __init__(self, json_data: dict):
-        self.id = json_data.get("id", -1)
+        self.id = json_data.get("id", None)
         self._name = None
         stats = json_data.get("stats", {})
         self.stats = AggregateStats(stats)
