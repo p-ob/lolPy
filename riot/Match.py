@@ -16,7 +16,7 @@ __author__ = 'Patrick O\'Brien'
     along with lolPy.  If not, see <http://www.gnu.org/licenses/>.
 '''
 import copy
-
+import time
 from riot.Participant import Participant
 
 
@@ -50,3 +50,8 @@ class Match(object):
                 return participant
         return None
 
+    def __repr__(self):
+        if self.match_creation:
+            return '{0} - {1}'.format(
+                self.match_type, time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(self.match_creation/1000)))
+        pass

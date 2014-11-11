@@ -15,7 +15,7 @@ __author__ = 'Patrick O\'Brien'
     You should have received a copy of the GNU General Public License
     along with lolPy.  If not, see <http://www.gnu.org/licenses/>.
 '''
-from riot import Player
+from riot.Player import Player
 
 
 class Participant(object):
@@ -29,13 +29,7 @@ class Participant(object):
         self.stats = json_data.get("stats", None)
         self.team_id = json_data.get("teamId", None)
         self.timeline = json_data.get("timeline", None)
-        self.player = Player.Player(player.get("player", player))
+        self.player = Player(player.get("player", player))
 
     def __repr__(self):
-        try:
-            return '{0} - {1}'.format(self.participant_id, self.player) if not list(self.player) == [
-                "participantId"] else str(self.participant_id)
-        except TypeError:
-            if self.player.id and self.player.name:
-                return '{0} - {1}'.format(self.player.id, self.player.name)
-        return str(vars(self))
+        return self.player.name + ' - ' + str(vars(self))

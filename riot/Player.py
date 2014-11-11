@@ -19,8 +19,6 @@ __author__ = 'Patrick O\'Brien'
 
 class Player(object):
     def __init__(self, json_data: dict):
-        if not isinstance(json_data, dict):
-            raise TypeError("Input must be a dictionary")
         self.name = json_data.get("name", json_data.get("summonerName", None))
         self.id = json_data.get("id", json_data.get("summonerId", None))
 

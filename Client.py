@@ -24,9 +24,6 @@ from riot.Constants import *
 from riot.Constants.RiotException import RiotException
 
 
-DEBUG = True
-
-
 class Client(object):
     """
     Client opens up connections between Python and RiotGames' API for League of Legends. It maps Json Objects from Riot
@@ -128,6 +125,7 @@ class Client(object):
             match_id = match.get("matchId", -1)
             matches += [Match.Match(match_id, self.__match_details(match_id, include_timeline))]
 
+        matches.sort(key=lambda x: x.match_creation, reverse=True)
         return matches
 
     def recent_match_history(self, include_timeline: bool=False) -> [Match.Match]:
@@ -149,6 +147,7 @@ class Client(object):
         for match in matches_json:
             match_id = match.get("gameId", -1)
             matches += [Match.Match(match_id, self.__match_details(match_id, include_timeline))]
+        matches.sort(key=lambda x: x.match_creation, reverse=True)
         return matches
 
     def ranked_stats(self) -> RankedStats.RankedStats:

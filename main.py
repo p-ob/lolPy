@@ -16,18 +16,16 @@ __author__ = 'Patrick O\'Brien'
     along with lolPy.  If not, see <http://www.gnu.org/licenses/>.
 '''
 
-''' This file is simply for testing/development purposes only, as well as
-    to provide an example on how to use Client.
-'''
-import Client
+# This file is simply for testing/development purposes only, as well as to provide an example on how to use Client.
 
+from Client import Client
 
 with open("key.txt") as f:
     key = f.read()
 
-client = Client.Client("drunk7irishman", "na", key)
+api = Client("drunk7irishman", "na", key)
 
-stats = client.ranked_match_history()
+stats = api.ranked_match_history()
 
 for stat in stats:
     print(vars(stat))
