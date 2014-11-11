@@ -15,7 +15,7 @@ __author__ = 'Patrick O\'Brien'
     You should have received a copy of the GNU General Public License
     along with lolPy.  If not, see <http://www.gnu.org/licenses/>.
 '''
-from riot.AggregateStats import AggregateStats
+from lolPy.riot.AggregateStats import AggregateStats
 
 
 class ChampionStats(object):

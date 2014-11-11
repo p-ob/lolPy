@@ -19,9 +19,9 @@ import time
 
 import requests
 
-from riot import *
-from riot.Constants import *
-from riot.Constants.RiotException import RiotException
+from lolPy.riot import *
+from lolPy.riot.Constants import *
+from lolPy.riot.Constants.RiotException import RiotException
 
 
 class Client(object):

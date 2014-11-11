@@ -17,7 +17,7 @@ __author__ = 'Patrick O\'Brien'
 '''
 import copy
 import time
-from riot.Participant import Participant
+from lolPy.riot.Participant import Participant
 
 
 class Match(object):
