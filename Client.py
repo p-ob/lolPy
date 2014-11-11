@@ -125,7 +125,7 @@ class Client(object):
             match_id = match.get("matchId", -1)
             matches += [Match.Match(match_id, self.__match_details(match_id, include_timeline))]
 
-        return sorted(matches, key=lambda x: x.count, reverse=True)
+        return sorted(matches, key=lambda x: x.match_creation, reverse=True)
 
     def recent_match_history(self, include_timeline: bool=False) -> [Match.Match]:
         if self._player is None:
@@ -147,7 +147,7 @@ class Client(object):
             match_id = match.get("gameId", -1)
             matches += [Match.Match(match_id, self.__match_details(match_id, include_timeline))]
 
-        return sorted(matches, key=lambda x: x.count, reverse=True)
+        return sorted(matches, key=lambda x: x.match_creation, reverse=True)
 
     def ranked_stats(self) -> RankedStats.RankedStats:
         if self._player is None:
