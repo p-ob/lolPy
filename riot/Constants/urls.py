@@ -17,7 +17,7 @@ __author__ = 'Patrick O\'Brien'
 '''
 
 
-base = "https://na.api.pvp.net/"
+base = "https://{0}.api.pvp.net/"
 
 player_by_name = "api/lol/{region}/v1.4/summoner/by-name/{summonerNames}"
 
