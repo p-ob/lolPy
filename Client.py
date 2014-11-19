@@ -32,8 +32,8 @@ class Client(object):
     def __init__(self, username, region: str, api_key: str):
         self.__check_api_key(api_key)
         self._username = username
-        self._region = region
-        self.base = urls.base.format(region)
+        self._region = region.lower()
+        self.base = urls.base.format(self._region)
         self._key = api_key
         self._player = None
         self.__search_for_player()
