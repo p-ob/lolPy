@@ -18,7 +18,6 @@ __author__ = 'Patrick O\'Brien'
 import time
 
 import requests
-
 from lolPy.riot import *
 from lolPy.riot.Constants import *
 from lolPy.riot.Constants.RiotException import RiotException
