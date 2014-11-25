@@ -22,4 +22,5 @@ with open('key.txt') as f:
 c = RiotApiClient('na', key)
 p = c.search('drunk7irishman')
 m = c.recent_match_history()
+print(m.get_data_members())
 test = 1
