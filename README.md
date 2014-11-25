@@ -1,6 +1,6 @@
 For how to use lolPy, see the Wiki page for `Client`
 
-lolPy requires [restPy](https://github.com/p-ob/restPy/wiki) to function in the new version.
+lolPy requires [restPy](https://github.com/p-ob/restPy/) to function in the new version.
 
 
 lolPy isn't endorsed by Riot Games and doesn't reflect the views or opinions of Riot Games or anyone officially involved
