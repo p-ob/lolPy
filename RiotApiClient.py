@@ -20,7 +20,7 @@ import urls as urls
 
 
 class RiotApiClient:
-    def __init__(self, region, key):
+    def __init__(self, key, region):
         self.region = region.lower()
         self.key = key
         self.client = Client.Client(urls.base.format(region))

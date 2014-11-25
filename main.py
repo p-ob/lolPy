@@ -19,7 +19,7 @@ from RiotApiClient import RiotApiClient
 
 with open('key.txt') as f:
     key = f.read()
-c = RiotApiClient('na', key)
+c = RiotApiClient(key, 'na')
 p = c.search('drunk7irishman')
 m = c.recent_match_history()
 print(m.get_data_members())
