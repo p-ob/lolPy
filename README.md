@@ -1,6 +1,6 @@
 For how to use lolPy, see the Wiki page for [`RiotApiClient`](https://github.com/p-ob/lolPy/wiki/RiotApiClient). I have provided an example there.
 
-lolPy requires [restPy](https://github.com/p-ob/restPy/) to function in the new version.
+lolPy requires [restPy](https://github.com/p-ob/restPy/) to function in the new version. restPy requires [xmltodict](https://github.com/martinblech/xmltodict).
 
 
 lolPy isn't endorsed by Riot Games and doesn't reflect the views or opinions of Riot Games or anyone officially involved
