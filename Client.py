@@ -179,7 +179,7 @@ class Client(object):
         if self._player is None:
             raise ClientException("Player not defined.")
         payload = {"api_key": self._key}
-        url = (self.base + urls.general_stats).format(region=self._region, summonerId=self._player.id)
+        url = (self.base + urls.summary_stats).format(region=self._region, summonerId=self._player.id)
         r = requests.get(url, params=payload)
         if r.status_code == RiotException.RateLimitExceeded:
             time.sleep(1)

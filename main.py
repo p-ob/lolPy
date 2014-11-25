@@ -21,5 +21,5 @@ with open('key.txt') as f:
     key = f.read()
 c = RiotApiClient('na', key)
 p = c.search('drunk7irishman')
-m = c.ranked_match_history()
+m = c.recent_match_history()
 test = 1
