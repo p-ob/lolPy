@@ -21,7 +21,7 @@ import riot.Constants.urls as urls
 
 class RiotApiClient:
     def __init__(self, region, key):
-        self.region = region
+        self.region = region.lower()
         self.key = key
         self.client = Client.Client(urls.base.format(region))
         self.summoner_id = -1
@@ -32,7 +32,7 @@ class RiotApiClient:
         If changing region, be sure to call search again; summoner_id is region specific
         :param region: new region to search in
         """
-        self.region = region
+        self.region = region.lower()
 
     def search(self, summoner_name):
         r = Request.Request(urls.player_by_name)
