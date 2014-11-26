@@ -23,7 +23,7 @@ class RiotApiClient:
     def __init__(self, key, region):
         self.region = region.lower()
         self.key = key
-        self.client = Client.Client(urls.base.format(region))
+        self.client = Client.Client(urls.base.format(self.region))
         self.summoner_id = -1
         self.summoner = None
 
@@ -33,6 +33,9 @@ class RiotApiClient:
         :param region: new region to search in
         """
         self.region = region.lower()
+        self.summoner = None
+        self.summoner_id = -1
+        self.client = Client.Client(urls.base.format(self.region))
 
     def search(self, summoner_name):
         r = Request.Request(urls.player_by_name)
