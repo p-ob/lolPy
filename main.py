@@ -16,10 +16,12 @@ __author__ = 'Patrick O\'Brien'
     along with lolPy.  If not, see <http://www.gnu.org/licenses/>.
 '''
 from RiotApiClient import RiotApiClient
+from Region import Region
+
 
 with open('key.txt') as f:
     key = f.read()
-c = RiotApiClient(key, 'na', True)
+c = RiotApiClient(key, Region.na, True)
 p = c.search('drunk7irishman')
 m = c.recent_match_history()
 test = 1
