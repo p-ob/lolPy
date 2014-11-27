@@ -16,4 +16,4 @@ __author__ = 'Patrick O\'Brien'
     along with lolPy.  If not, see <http://www.gnu.org/licenses/>.
 '''
 
-__all__ = ["RiotApiClient"]
+__all__ = ["RiotApiClient", "Region"]
