@@ -38,34 +38,27 @@ class RiotApiClient:
         self.summoner_id = -1
         self.client = Client.Client(urls.base.format(self.region))
 
-    def search(self, summoner_name: str, return_json: bool=False):
-        r = Request.Request(urls.player_by_name)
-        r.add_url_parameter('region', self.region)
-        r.add_url_parameter('summonerNames', summoner_name)
-        r.add_query_parameter('api_key', self.key)
-
-        self.summoner = getattr(self.client.execute_with_return_struct(r), summoner_name.lower().replace(' ', ''))
-        self.summoner_id = getattr(self.summoner, 'id', -1)
-        if return_json or self.return_json:
-            return self.client.execute(r).json()
-        return self.summoner
-
-    def search_many(self, return_json: bool, *summoner_names):
+    def search(self, return_json: bool, *summoner_names):
         """
         :param summoner_names:
         :return:
         """
+        if len(summoner_names) > 40:
+            raise Exception("Too many summoners. Riot only allows up to 40.")
+        elif len(summoner_names) < 1:
+            raise Exception("Need at least one summoner!")
         r = Request.Request(urls.player_by_name)
         r.add_url_parameter('region', self.region)
         r.add_url_parameter('summonerNames', ','.join(summoner_names))
         r.add_query_parameter('api_key', self.key)
 
-        if return_json or self.return_json:
-            return self.client.execute(r).json()
         val = self.client.execute_with_return_struct(r)
         self.summoner = getattr(val, summoner_names[0].lower().replace(' ', ''), None)
         self.summoner_id = getattr(self.summoner, 'id', -1)
-        return [getattr(val, s.lower().replace(' ', '')) for s in summoner_names]
+        if return_json or self.return_json:
+            return self.client.execute(r).json()
+        return [getattr(val, s.lower().replace(' ', '')) for s in summoner_names] if len(
+            summoner_names) > 1 else getattr(val, summoner_names[0].lower().replace(' ', ''), None)
 
     def ranked_match_history(self, return_json: bool=False):
         if self.summoner is None:
