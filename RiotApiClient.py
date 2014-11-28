@@ -38,17 +38,34 @@ class RiotApiClient:
         self.summoner_id = -1
         self.client = Client.Client(urls.base.format(self.region))
 
-    def search(self, summoner_name, return_json: bool=False):
+    def search(self, summoner_name: str, return_json: bool=False):
         r = Request.Request(urls.player_by_name)
         r.add_url_parameter('region', self.region)
         r.add_url_parameter('summonerNames', summoner_name)
         r.add_query_parameter('api_key', self.key)
 
-        self.summoner = getattr(self.client.execute_with_return_struct(r), summoner_name)
+        self.summoner = getattr(self.client.execute_with_return_struct(r), summoner_name.lower().replace(' ', ''))
         self.summoner_id = getattr(self.summoner, 'id', -1)
         if return_json or self.return_json:
             return self.client.execute(r).json()
         return self.summoner
+
+    def search_many(self, return_json: bool, *summoner_names):
+        """
+        :param summoner_names:
+        :return:
+        """
+        r = Request.Request(urls.player_by_name)
+        r.add_url_parameter('region', self.region)
+        r.add_url_parameter('summonerNames', ','.join(summoner_names))
+        r.add_query_parameter('api_key', self.key)
+
+        if return_json or self.return_json:
+            return self.client.execute(r).json()
+        val = self.client.execute_with_return_struct(r)
+        self.summoner = getattr(val, summoner_names[0].lower().replace(' ', ''), None)
+        self.summoner_id = getattr(self.summoner, 'id', -1)
+        return [getattr(val, s.lower().replace(' ', '')) for s in summoner_names]
 
     def ranked_match_history(self, return_json: bool=False):
         if self.summoner is None:
@@ -72,6 +89,8 @@ class RiotApiClient:
         r.add_url_parameter('summonerId', self.summoner_id)
         r.add_query_parameter('api_key', self.key)
 
+        if return_json or self.return_json:
+            return self.client.execute(r).json()
         return self.client.execute_with_return_struct(r)
 
     def ranked_stats(self, return_json: bool=False):
@@ -111,11 +130,79 @@ class RiotApiClient:
             return self.client.execute(r).json()
         return self.client.execute_with_return_struct(r)
 
-    def champion_data(self, return_json: bool=False):
-        r = Request.Request(urls.champion_data)
+    def champion_data(self, champion_id: int=-1, return_json: bool=False):
+        if champion_id >= 0:
+            r = Request.Request(urls.champion_data_by_id)
+            r.add_url_parameter('id', champion_id)
+        else:
+            r = Request.Request(urls.champion_data)
         r.add_url_parameter('region', self.region)
         r.add_query_parameter('api_key', self.key)
 
         if return_json or self.return_json:
             return self.client.execute(r).json()
         return self.client.execute_with_return_struct(r)
+
+    def rune_data(self, rune_id: int=-1, return_json: bool=False):
+        if rune_id >= 0:
+            r = Request.Request(urls.rune_data_by_id)
+            r.add_url_parameter('id', rune_id)
+        else:
+            r = Request.Request(urls.rune_data)
+        r.add_url_parameter('region', self.region)
+        r.add_query_parameter('api_key', self.key)
+
+        if return_json or self.return_json:
+            return self.client.execute(r).json()
+        return self.client.execute_with_return_struct(r)
+
+    def mastery_data(self, mastery_id: int=-1, return_json: bool=False):
+        if mastery_id >= 0:
+            r = Request.Request(urls.mastery_data_by_id)
+            r.add_url_parameter('id', mastery_id)
+        else:
+            r = Request.Request(urls.mastery_data)
+        r.add_url_parameter('region', self.region)
+        r.add_query_parameter('api_key', self.key)
+
+        if return_json or self.return_json:
+            return self.client.execute(r).json()
+        return self.client.execute_with_return_struct(r)
+
+    def item_data(self, item_id: int=-1, return_json: bool=False):
+        if item_id >= 0:
+            r = Request.Request(urls.item_data_by_id)
+            r.add_url_parameter('id', item_id)
+        else:
+            r = Request.Request(urls.item_data)
+        r.add_url_parameter('region', self.region)
+        r.add_query_parameter('api_key', self.key)
+
+        if return_json or self.return_json:
+            return self.client.execute(r).json()
+        return self.client.execute_with_return_struct(r)
+
+    def summoner_spell_data(self, summoner_spell_id: int=-1, return_json: bool=False):
+        if summoner_spell_id >= 0:
+            r = Request.Request(urls.summoner_spell_data_by_id)
+            r.add_url_parameter('id', summoner_spell_id)
+        else:
+            r = Request.Request(urls.summoner_spell_data)
+        r.add_url_parameter('region', self.region)
+        r.add_query_parameter('api_key', self.key)
+
+        if return_json or self.return_json:
+            return self.client.execute(r).json()
+        return self.client.execute_with_return_struct(r)
+
+    def league_data(self, return_json: bool=False):
+        r = Request.Request(urls.league_data)
+        r.add_url_parameter('region', self.region)
+        r.add_url_parameter('summonerIds', self.summoner_id)
+        r.add_query_parameter('api_key', self.key)
+
+        if return_json or self.return_json:
+            return self.client.execute(r).json()
+        return getattr(self.client.execute_with_return_struct(r), str(self.summoner_id))
+
+

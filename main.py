@@ -21,7 +21,7 @@ from Region import Region
 
 with open('key.txt') as f:
     key = f.read()
-c = RiotApiClient(key, Region.na, True)
-p = c.search('drunk7irishman')
-m = c.recent_match_history()
+c = RiotApiClient(key, Region.na)
+p = c.search_many(False, 'Dyrus', 'DoubleLift', 'hi im gosu')
+m = c.league_data()
 test = 1
