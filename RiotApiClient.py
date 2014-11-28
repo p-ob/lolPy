@@ -58,7 +58,7 @@ class RiotApiClient:
         if return_json or self.return_json:
             return self.client.execute(r).json()
         return [getattr(val, s.lower().replace(' ', '')) for s in summoner_names] if len(
-            summoner_names) > 1 else getattr(val, summoner_names[0].lower().replace(' ', ''), None)
+            summoner_names) > 1 else self.summoner
 
     def ranked_match_history(self, return_json: bool=False):
         if self.summoner is None:

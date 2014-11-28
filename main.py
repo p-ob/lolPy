@@ -19,10 +19,15 @@ from RiotApiClient import RiotApiClient
 from Region import Region
 
 
-with open('key.txt') as f:
-    key = f.read()
-c = RiotApiClient(key, Region.na)
-p = c.search(False, 'Dyrus', 'DoubleLift', 'hi im gosu')
-p = c.search(False, 'drunk7irishman')
-m = c.league_data()
-test = 1
+def main():
+    with open('key.txt') as f:
+        key = f.read()
+    c = RiotApiClient(key, Region.na)
+    p = c.search(False, 'Dyrus', 'DoubleLift', 'hi im gosu')
+    p = c.search(False, 'drunk7irishman')
+    m = c.league_data()
+    return m
+
+
+if __name__ == '__main__':
+    main()
