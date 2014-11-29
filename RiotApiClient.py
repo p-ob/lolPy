@@ -16,7 +16,7 @@ __author__ = 'Patrick O\'Brien'
     along with lolPy.  If not, see <http://www.gnu.org/licenses/>.
 '''
 from restPy import *
-import urls
+from lolPy import urls
 
 
 class RiotApiClient:

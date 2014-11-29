@@ -23,11 +23,10 @@ def main():
     with open('key.txt') as f:
         key = f.read()
     c = RiotApiClient(key, Region.na)
-    p = c.search(False, 'Dyrus', 'DoubleLift', 'hi im gosu')
-    p = c.search(False, 'drunk7irishman')
-    m = c.league_data()
-    return m
+    s = ('Dyrus', 'DoubleLift', 'hi im gosu')
+    p = c.search(False, *s)
+    print(c.search(True, 'drunk7irishman'))
 
 
 if __name__ == '__main__':
-    main()
+    print(main())
