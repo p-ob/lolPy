@@ -25,6 +25,9 @@ def main():
     c = RiotApiClient(key, Region.na)
     s = ('Dyrus', 'DoubleLift', 'hi im gosu')
     p = c.search(s)
+    b = c.current_summoner
+    c.next()
+    b = c.current_summoner
     p = c.search('drunk7irishman')
     return p
 
