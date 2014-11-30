@@ -1,22 +1,22 @@
 To use lolPy, you must first create an instance of `RiotApiClient`, which requires an API key from [RiotGames](https://developer.riotgames.com/) and which region you'd like to begin work in. This region can change at any time by using `change_region`, which resets all region-specific data to their default values (e.g. summoner ids are region specific, so the summoner id stored is reset to -1).
 
 Example:  
-`list_of_summoner_names = ['Dyrus', 'hi im gosu']`  
-`key = 'this-is-an-example'`  
-`client = RiotApiClient(key, Region.na)  # Region.na evaluates to 'na'`  
-`summoner = client.search(list_of_summoner_names)  # search returns the first summoner in the list of search results; these are stored in RiotApiClient.summoners`  
-`print(summoner.name)`  
-`   >> 'Dyrus'`  
-`summoner = client.next()`  
-`print(summoner.name)`  
-`   >> 'hi im gosu'`  
-`match_history = client.ranked_match_history()  # returns last 10 ranked games for hi im gosu`  
-`# what are the attributes stored in match_history??`  
-`print(match_history.get_data_members())`  
-`   >> ['matches']  # match_history.matches -> [Struct, Struct, ... Struct]`  
-`# what is stored in match_history.matches[0]?? (or getattr(match_history, 'matches')[0])`  
-`print(match)history.matches[0].get_data_members()`  
-`   >> ['matchType', 'matchVersion', 'region', 'matchId', 'season', 'matchDuration', 'platformId', 'mapId', 'participants', 'matchCreation', 'queueType', 'participantIdentities', 'matchMode']`  
+`1. list_of_summoner_names = ['Dyrus', 'hi im gosu']`  
+`2. key = 'this-is-an-example'`  
+`3. client = RiotApiClient(key, Region.na)  # Region.na evaluates to 'na'`  
+`4. summoner = client.search(list_of_summoner_names)  # search returns the first summoner in the list of search results; these are stored in RiotApiClient.summoners`  
+`5. print(summoner.name)`  
+`6.    >> 'Dyrus'`  
+`7. summoner = client.next()`  
+`8. print(summoner.name)`  
+`9.    >> 'hi im gosu'`  
+`10. match_history = client.ranked_match_history()  # returns last 10 ranked games for hi im gosu`  
+`11. # what are the attributes stored in match_history??`  
+`12. print(match_history.get_data_members())`  
+`13.    >> ['matches']  # match_history.matches -> [Struct, Struct, ... Struct]`  
+`14. # what is stored in match_history.matches[0]?? (or getattr(match_history, 'matches')[0])`  
+`15. print(match)history.matches[0].get_data_members()`  
+`16.    >> ['matchType', 'matchVersion', 'region', 'matchId', 'season', 'matchDuration', 'platformId', 'mapId', 'participants', 'matchCreation', 'queueType', 'participantIdentities', 'matchMode']`  
 
 
 
