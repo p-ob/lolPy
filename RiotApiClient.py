@@ -48,6 +48,7 @@ class RiotApiClient:
         else:
             self._current_summoner_index += 1
             self.summoner_id = getattr(self.summoners[self._current_summoner_index], 'id', -1)
+        return self.current_summoner
 
     @property
     def current_summoner(self):
