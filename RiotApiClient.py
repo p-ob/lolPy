@@ -38,7 +38,7 @@ class RiotApiClient:
         self.summoner_id = -1
         self.client = Client.Client(urls.base.format(self.region))
 
-    def search(self, return_json: bool, *summoner_names):
+    def search(self, summoner_names, return_json: bool=False):
         """
         :param summoner_names:
         :return:
@@ -49,7 +49,10 @@ class RiotApiClient:
             raise Exception("Need at least one summoner!")
         r = Request.Request(urls.player_by_name)
         r.add_url_parameter('region', self.region)
-        r.add_url_parameter('summonerNames', ','.join(summoner_names))
+        if isinstance(summoner_names, list) or isinstance(summoner_names, tuple):
+            r.add_url_parameter('summonerNames', ','.join(summoner_names))
+        elif isinstance(summoner_names, str):
+            r.add_url_parameter('summonerNames', summoner_names)
         r.add_query_parameter('api_key', self.key)
 
         val = self.client.execute_with_return_struct(r)
@@ -57,8 +60,11 @@ class RiotApiClient:
         self.summoner_id = getattr(self.summoner, 'id', -1)
         if return_json or self.return_json:
             return self.client.execute(r).json()
-        return [getattr(val, s.lower().replace(' ', '')) for s in summoner_names] if len(
-            summoner_names) > 1 else self.summoner
+        if isinstance(summoner_names, list) or isinstance(summoner_names, tuple):
+            return [getattr(val, s.lower().replace(' ', '')) for s in summoner_names] if len(
+                summoner_names) > 1 else self.summoner
+        else:
+            return getattr(val, summoner_names)
 
     def ranked_match_history(self, return_json: bool=False):
         if self.summoner is None:
