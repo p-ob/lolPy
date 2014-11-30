@@ -36,9 +36,9 @@ class RiotApiClient:
         """
         self.region = region.lower()
         self.summoners = None
-        self.summoner_id = 41
+        self.summoner_id = -1
         self.client = Client.Client(urls.base.format(self.region))
-        self._current_summoner_index = -1
+        self._current_summoner_index = 41
 
     def next(self):
         assert isinstance(self.summoners, list)
@@ -79,8 +79,9 @@ class RiotApiClient:
         return self.summoners[0]
 
     def ranked_match_history(self, return_json: bool=False):
-        if self.summoners is None:
-            raise Exception("Must search for summoner first")
+        assert self.summoners is not None
+        assert self.summoner_id >= 0
+        assert self._current_summoner_index < 40
 
         r = Request.Request(urls.ranked_match_history)
         r.add_url_parameter('region', self.region)
@@ -92,8 +93,9 @@ class RiotApiClient:
         return self.client.execute_with_return_struct(r)
 
     def recent_match_history(self, return_json: bool=False):
-        if self.summoners is None:
-            raise Exception("Must search for summoner first")
+        assert self.summoners is not None
+        assert self.summoner_id >= 0
+        assert self._current_summoner_index < 40
 
         r = Request.Request(urls.recent_match_history)
         r.add_url_parameter('region', self.region)
@@ -105,8 +107,9 @@ class RiotApiClient:
         return self.client.execute_with_return_struct(r)
 
     def ranked_stats(self, return_json: bool=False):
-        if self.summoners is None:
-            raise Exception("Must search for summoner first")
+        assert self.summoners is not None
+        assert self.summoner_id >= 0
+        assert self._current_summoner_index < 40
 
         r = Request.Request(urls.ranked_stats)
         r.add_url_parameter('region', self.region)
@@ -118,8 +121,9 @@ class RiotApiClient:
         return self.client.execute_with_return_struct(r)
 
     def summary_stats(self, return_json: bool=False):
-        if self.summoners is None:
-            raise Exception("Must search for summoner first")
+        assert self.summoners is not None
+        assert self.summoner_id >= 0
+        assert self._current_summoner_index < 40
 
         r = Request.Request(urls.summary_stats)
         r.add_url_parameter('region', self.region)
@@ -207,8 +211,10 @@ class RiotApiClient:
         return self.client.execute_with_return_struct(r)
 
     def league_data(self, return_json: bool=False):
-        if self.summoners is None:
-            raise Exception("Must search for summoner first")
+        assert self.summoners is not None
+        assert self.summoner_id >= 0
+        assert self._current_summoner_index < 40
+
         r = Request.Request(urls.league_data)
         r.add_url_parameter('region', self.region)
         r.add_url_parameter('summonerIds', self.summoner_id)
