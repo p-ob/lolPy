@@ -49,17 +49,14 @@ class RiotApiClient:
             raise RiotApiException('RiotApiClient.summoners is not populated; cannot get next summoner.')
         assert isinstance(self.summoners, list)
 
-        if self._current_summoner_index + 1 >= len(self.summoners):
-            self._current_summoner_index = 0
-            self.summoner_id = getattr(self.summoners[0], 'id', -1)
-        else:
-            self._current_summoner_index += 1
-            self.summoner_id = getattr(self.summoners[self._current_summoner_index], 'id', -1)
+        self._current_summoner_index += 1
+        self.summoner_id = self.current_summoner.id
         return self.current_summoner
 
     @property
     def current_summoner(self):
-        return self.summoners[self._current_summoner_index]
+        assert isinstance(self.summoners, list)
+        return self.summoners[self._current_summoner_index % len(self.summoners)]
 
     def search(self, summoner_names, return_json: bool=False):
         """

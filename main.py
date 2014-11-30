@@ -25,12 +25,10 @@ def main():
     c = RiotApiClient(key, Region.na)
     s = ('Dyrus', 'DoubleLift', 'hi im gosu')
     p = c.search(s)
-    b = c.current_summoner
-    c.next()
-    b = c.current_summoner
-    c.summoners = None
-    c.next()
-    return p
+    p = c.next()
+    p = c.next()
+    p = c.next()
+    print(c.ranked_match_history().matches[0].get_data_members())
 
 
 if __name__ == '__main__':
