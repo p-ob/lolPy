@@ -29,7 +29,7 @@ class RiotApiClient:
         self.key = key
         self.client = Client.Client(urls.base.format(self.region))
         self.summoner_id = -1
-        self._current_summoner_index = 41
+        self._current_summoner_index = -1
         self.summoners = None
         self._return_json = return_json
 
@@ -42,7 +42,7 @@ class RiotApiClient:
         self.summoners = None
         self.summoner_id = -1
         self.client = Client.Client(urls.base.format(self.region))
-        self._current_summoner_index = 41
+        self._current_summoner_index = -1
 
     def next(self):
         if self.summoners is None:
@@ -87,7 +87,7 @@ class RiotApiClient:
             raise RiotApiException("RiotApiClient.summoners is not populated")
         if self.summoner_id < 0:
             raise RiotApiException("RiotApiClient.summoner_id is invalid")
-        if self._current_summoner_index >= 40 or self._current_summoner_index < 0:
+        if self._current_summoner_index < 0:
             raise RiotApiException("RiotApiClient._current_summoner_index is invalid")
 
         r = Request.Request(urls.ranked_match_history)
@@ -104,7 +104,7 @@ class RiotApiClient:
             raise RiotApiException("RiotApiClient.summoners is not populated")
         if self.summoner_id < 0:
             raise RiotApiException("RiotApiClient.summoner_id is invalid")
-        if self._current_summoner_index >= 40 or self._current_summoner_index < 0:
+        if self._current_summoner_index < 0:
             raise RiotApiException("RiotApiClient._current_summoner_index is invalid")
 
         r = Request.Request(urls.recent_match_history)
@@ -121,7 +121,7 @@ class RiotApiClient:
             raise RiotApiException("RiotApiClient.summoners is not populated")
         if self.summoner_id < 0:
             raise RiotApiException("RiotApiClient.summoner_id is invalid")
-        if self._current_summoner_index >= 40 or self._current_summoner_index < 0:
+        if self._current_summoner_index < 0:
             raise RiotApiException("RiotApiClient._current_summoner_index is invalid")
 
         r = Request.Request(urls.ranked_stats)
@@ -138,7 +138,7 @@ class RiotApiClient:
             raise RiotApiException("RiotApiClient.summoners is not populated")
         if self.summoner_id < 0:
             raise RiotApiException("RiotApiClient.summoner_id is invalid")
-        if self._current_summoner_index >= 40 or self._current_summoner_index < 0:
+        if self._current_summoner_index < 0:
             raise RiotApiException("RiotApiClient._current_summoner_index is invalid")
 
         r = Request.Request(urls.summary_stats)
@@ -231,7 +231,7 @@ class RiotApiClient:
             raise RiotApiException("RiotApiClient.summoners is not populated")
         if self.summoner_id < 0:
             raise RiotApiException("RiotApiClient.summoner_id is invalid")
-        if self._current_summoner_index >= 40 or self._current_summoner_index < 0:
+        if self._current_summoner_index < 0:
             raise RiotApiException("RiotApiClient._current_summoner_index is invalid")
 
         r = Request.Request(urls.league_data)
