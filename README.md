@@ -6,7 +6,7 @@ Example:
 `client = RiotApiClient(key, Region.na)  # Region.na evaluates to 'na'`  
 `summoner = client.search(list_of_summoner_names)  # search returns the first summoner in the list of search results; these are stored in RiotApiClient.summoners`  
 `print(summoner.name)`  
-`   >> 'Dyrus'`
+`   >> 'Dyrus'`  
 `summoner = client.next()`  
 `print(summoner.name)`  
 `   >> 'hi im gosu'`  
