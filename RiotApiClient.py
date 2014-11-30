@@ -19,6 +19,10 @@ from restPy import *
 from lolPy import urls
 
 
+class RiotApiException(Exception):
+    pass
+
+
 class RiotApiClient:
     def __init__(self, key, region, return_json: bool=False):
         self.region = region.lower()
@@ -27,7 +31,7 @@ class RiotApiClient:
         self.summoner_id = -1
         self._current_summoner_index = 41
         self.summoners = None
-        self.return_json = return_json
+        self._return_json = return_json
 
     def change_region(self, region):
         """
@@ -41,7 +45,10 @@ class RiotApiClient:
         self._current_summoner_index = 41
 
     def next(self):
+        if self.summoners is None:
+            raise RiotApiException('RiotApiClient.summoners is not populated; cannot get next summoner.')
         assert isinstance(self.summoners, list)
+
         if self._current_summoner_index + 1 >= len(self.summoners):
             self._current_summoner_index = 0
             self.summoner_id = getattr(self.summoners[0], 'id', -1)
@@ -62,9 +69,9 @@ class RiotApiClient:
         if not (isinstance(summoner_names, list) or isinstance(summoner_names, tuple)):
             summoner_names = [summoner_names]
         if len(summoner_names) > 40:
-            raise Exception("Too many summoners. Riot only allows up to 40.")
+            raise RiotApiException("Too many summoners. Riot only allows up to 40.")
         elif len(summoner_names) < 1:
-            raise Exception("Need at least one summoner!")
+            raise RiotApiException("Need at least one summoner!")
         r = Request.Request(urls.player_by_name)
         r.add_url_parameter('region', self.region)
         r.add_url_parameter('summonerNames', ','.join(summoner_names))
@@ -74,63 +81,75 @@ class RiotApiClient:
         self.summoners = [getattr(val, s.lower().replace(' ', '')) for s in summoner_names]
         self.summoner_id = getattr(self.summoners[0], 'id', -1)
         self._current_summoner_index = 0
-        if return_json or self.return_json:
+        if return_json or self._return_json:
             return self.client.execute(r).json()
         return self.summoners[0]
 
     def ranked_match_history(self, return_json: bool=False):
-        assert self.summoners is not None
-        assert self.summoner_id >= 0
-        assert self._current_summoner_index < 40
+        if self.summoners is None:
+            raise RiotApiException("RiotApiClient.summoners is not populated")
+        if self.summoner_id < 0:
+            raise RiotApiException("RiotApiClient.summoner_id is invalid")
+        if self._current_summoner_index >= 40 or self._current_summoner_index < 0:
+            raise RiotApiException("RiotApiClient._current_summoner_index is invalid")
 
         r = Request.Request(urls.ranked_match_history)
         r.add_url_parameter('region', self.region)
         r.add_url_parameter('summonerId', self.summoner_id)
         r.add_query_parameter('api_key', self.key)
 
-        if return_json or self.return_json:
+        if return_json or self._return_json:
             return self.client.execute(r).json()
         return self.client.execute_with_return_struct(r)
 
     def recent_match_history(self, return_json: bool=False):
-        assert self.summoners is not None
-        assert self.summoner_id >= 0
-        assert self._current_summoner_index < 40
+        if self.summoners is None:
+            raise RiotApiException("RiotApiClient.summoners is not populated")
+        if self.summoner_id < 0:
+            raise RiotApiException("RiotApiClient.summoner_id is invalid")
+        if self._current_summoner_index >= 40 or self._current_summoner_index < 0:
+            raise RiotApiException("RiotApiClient._current_summoner_index is invalid")
 
         r = Request.Request(urls.recent_match_history)
         r.add_url_parameter('region', self.region)
         r.add_url_parameter('summonerId', self.summoner_id)
         r.add_query_parameter('api_key', self.key)
 
-        if return_json or self.return_json:
+        if return_json or self._return_json:
             return self.client.execute(r).json()
         return self.client.execute_with_return_struct(r)
 
     def ranked_stats(self, return_json: bool=False):
-        assert self.summoners is not None
-        assert self.summoner_id >= 0
-        assert self._current_summoner_index < 40
+        if self.summoners is None:
+            raise RiotApiException("RiotApiClient.summoners is not populated")
+        if self.summoner_id < 0:
+            raise RiotApiException("RiotApiClient.summoner_id is invalid")
+        if self._current_summoner_index >= 40 or self._current_summoner_index < 0:
+            raise RiotApiException("RiotApiClient._current_summoner_index is invalid")
 
         r = Request.Request(urls.ranked_stats)
         r.add_url_parameter('region', self.region)
         r.add_url_parameter('summonerId', self.summoner_id)
         r.add_query_parameter('api_key', self.key)
 
-        if return_json or self.return_json:
+        if return_json or self._return_json:
             return self.client.execute(r).json()
         return self.client.execute_with_return_struct(r)
 
     def summary_stats(self, return_json: bool=False):
-        assert self.summoners is not None
-        assert self.summoner_id >= 0
-        assert self._current_summoner_index < 40
+        if self.summoners is None:
+            raise RiotApiException("RiotApiClient.summoners is not populated")
+        if self.summoner_id < 0:
+            raise RiotApiException("RiotApiClient.summoner_id is invalid")
+        if self._current_summoner_index >= 40 or self._current_summoner_index < 0:
+            raise RiotApiException("RiotApiClient._current_summoner_index is invalid")
 
         r = Request.Request(urls.summary_stats)
         r.add_url_parameter('region', self.region)
         r.add_url_parameter('summonerId', self.summoner_id)
         r.add_query_parameter('api_key', self.key)
 
-        if return_json or self.return_json:
+        if return_json or self._return_json:
             return self.client.execute(r).json()
         return self.client.execute_with_return_struct(r)
 
@@ -141,7 +160,7 @@ class RiotApiClient:
         r.add_query_parameter('api_key', self.key)
         r.add_query_parameter('includeTimeline', include_timeline)
 
-        if return_json or self.return_json:
+        if return_json or self._return_json:
             return self.client.execute(r).json()
         return self.client.execute_with_return_struct(r)
 
@@ -154,7 +173,7 @@ class RiotApiClient:
         r.add_url_parameter('region', self.region)
         r.add_query_parameter('api_key', self.key)
 
-        if return_json or self.return_json:
+        if return_json or self._return_json:
             return self.client.execute(r).json()
         return self.client.execute_with_return_struct(r)
 
@@ -167,7 +186,7 @@ class RiotApiClient:
         r.add_url_parameter('region', self.region)
         r.add_query_parameter('api_key', self.key)
 
-        if return_json or self.return_json:
+        if return_json or self._return_json:
             return self.client.execute(r).json()
         return self.client.execute_with_return_struct(r)
 
@@ -180,7 +199,7 @@ class RiotApiClient:
         r.add_url_parameter('region', self.region)
         r.add_query_parameter('api_key', self.key)
 
-        if return_json or self.return_json:
+        if return_json or self._return_json:
             return self.client.execute(r).json()
         return self.client.execute_with_return_struct(r)
 
@@ -193,7 +212,7 @@ class RiotApiClient:
         r.add_url_parameter('region', self.region)
         r.add_query_parameter('api_key', self.key)
 
-        if return_json or self.return_json:
+        if return_json or self._return_json:
             return self.client.execute(r).json()
         return self.client.execute_with_return_struct(r)
 
@@ -206,21 +225,24 @@ class RiotApiClient:
         r.add_url_parameter('region', self.region)
         r.add_query_parameter('api_key', self.key)
 
-        if return_json or self.return_json:
+        if return_json or self._return_json:
             return self.client.execute(r).json()
         return self.client.execute_with_return_struct(r)
 
     def league_data(self, return_json: bool=False):
-        assert self.summoners is not None
-        assert self.summoner_id >= 0
-        assert self._current_summoner_index < 40
+        if self.summoners is None:
+            raise RiotApiException("RiotApiClient.summoners is not populated")
+        if self.summoner_id < 0:
+            raise RiotApiException("RiotApiClient.summoner_id is invalid")
+        if self._current_summoner_index >= 40 or self._current_summoner_index < 0:
+            raise RiotApiException("RiotApiClient._current_summoner_index is invalid")
 
         r = Request.Request(urls.league_data)
         r.add_url_parameter('region', self.region)
         r.add_url_parameter('summonerIds', self.summoner_id)
         r.add_query_parameter('api_key', self.key)
 
-        if return_json or self.return_json:
+        if return_json or self._return_json:
             return self.client.execute(r).json()
         return getattr(self.client.execute_with_return_struct(r), str(self.summoner_id))
 

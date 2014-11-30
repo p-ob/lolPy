@@ -28,7 +28,8 @@ def main():
     b = c.current_summoner
     c.next()
     b = c.current_summoner
-    p = c.search('drunk7irishman')
+    c.summoners = None
+    c.next()
     return p
 
 
