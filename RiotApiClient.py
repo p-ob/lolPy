@@ -30,7 +30,7 @@ class RiotApiClient:
         self.client = Client.Client(urls.base.format(self.region))
         self.summoner_id = -1
         self._current_summoner_index = -1
-        self.summoners = None
+        self.summoners = []
         self._return_json = return_json
 
     def change_region(self, region):
@@ -39,13 +39,13 @@ class RiotApiClient:
         :param region: new region to search in
         """
         self.region = region.lower()
-        self.summoners = None
+        self.summoners = []
         self.summoner_id = -1
         self.client = Client.Client(urls.base.format(self.region))
         self._current_summoner_index = -1
 
     def next(self):
-        if self.summoners is None:
+        if self.summoners is []:
             raise RiotApiException('RiotApiClient.summoners is not populated; cannot get next summoner.')
         assert isinstance(self.summoners, list)
 
@@ -83,7 +83,7 @@ class RiotApiClient:
         return self.summoners[0]
 
     def ranked_match_history(self, return_json: bool=False):
-        if self.summoners is None:
+        if self.summoners is []:
             raise RiotApiException("RiotApiClient.summoners is not populated")
         if self.summoner_id < 0:
             raise RiotApiException("RiotApiClient.summoner_id is invalid")
@@ -100,7 +100,7 @@ class RiotApiClient:
         return self.client.execute_with_return_struct(r)
 
     def recent_match_history(self, return_json: bool=False):
-        if self.summoners is None:
+        if self.summoners is []:
             raise RiotApiException("RiotApiClient.summoners is not populated")
         if self.summoner_id < 0:
             raise RiotApiException("RiotApiClient.summoner_id is invalid")
@@ -117,7 +117,7 @@ class RiotApiClient:
         return self.client.execute_with_return_struct(r)
 
     def ranked_stats(self, return_json: bool=False):
-        if self.summoners is None:
+        if self.summoners is []:
             raise RiotApiException("RiotApiClient.summoners is not populated")
         if self.summoner_id < 0:
             raise RiotApiException("RiotApiClient.summoner_id is invalid")
@@ -134,7 +134,7 @@ class RiotApiClient:
         return self.client.execute_with_return_struct(r)
 
     def summary_stats(self, return_json: bool=False):
-        if self.summoners is None:
+        if self.summoners is []:
             raise RiotApiException("RiotApiClient.summoners is not populated")
         if self.summoner_id < 0:
             raise RiotApiException("RiotApiClient.summoner_id is invalid")
@@ -227,7 +227,7 @@ class RiotApiClient:
         return self.client.execute_with_return_struct(r)
 
     def league_data(self, return_json: bool=False):
-        if self.summoners is None:
+        if self.summoners is []:
             raise RiotApiException("RiotApiClient.summoners is not populated")
         if self.summoner_id < 0:
             raise RiotApiException("RiotApiClient.summoner_id is invalid")
