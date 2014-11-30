@@ -17,9 +17,9 @@ Example:
 `14. # what is stored in match_history.matches[0]?? (or getattr(match_history, 'matches')[0])`  
 `15. print(match)history.matches[0].get_data_members()`  
 `16.    >> ['matchType', 'matchVersion', 'region', 'matchId', 'season', 'matchDuration', 'platformId', 'mapId', 'participants', 'matchCreation', 'queueType', 'participantIdentities', 'matchMode']`
-`17. client.next()  # client will loop back to the beginning of the list once the end has been hit`
-`18. print(client.current_summoner.name)`
-`19.   >> 'Dyrus'`
+`17. client.next()  # client will loop back to the beginning of the list once the end has been hit`  
+`18. print(client.current_summoner.name)`  
+`19.   >> 'Dyrus'`  
 
 
 
