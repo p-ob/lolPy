@@ -56,7 +56,10 @@ class RiotApiClient:
         r.add_query_parameter('api_key', self.key)
 
         val = self.client.execute_with_return_struct(r)
-        self.summoner = getattr(val, summoner_names[0].lower().replace(' ', ''), None)
+        if isinstance(summoner_names, list) or isinstance(summoner_names, tuple):
+            self.summoner = getattr(val, summoner_names[0].lower().replace(' ', ''), None)
+        else:
+            self.summoner = getattr(val, summoner_names.lower().replace(' ', ''))
         self.summoner_id = getattr(self.summoner, 'id', -1)
         if return_json or self.return_json:
             return self.client.execute(r).json()
@@ -64,7 +67,7 @@ class RiotApiClient:
             return [getattr(val, s.lower().replace(' ', '')) for s in summoner_names] if len(
                 summoner_names) > 1 else self.summoner
         else:
-            return getattr(val, summoner_names)
+            return getattr(val, summoner_names.lower().replace(' ', ''))
 
     def ranked_match_history(self, return_json: bool=False):
         if self.summoner is None:

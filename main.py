@@ -25,7 +25,8 @@ def main():
     c = RiotApiClient(key, Region.na)
     s = ('Dyrus', 'DoubleLift', 'hi im gosu')
     p = c.search(s)
-    print(c.search('drunk7irishman'))
+    p = c.search('drunk7irishman')
+    return p
 
 
 if __name__ == '__main__':
