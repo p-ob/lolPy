@@ -16,13 +16,13 @@ __author__ = 'Patrick O\'Brien'
     along with lolPy.  If not, see <http://www.gnu.org/licenses/>.
 '''
 from RiotApiClient import RiotApiClient
-from Region import Region
+from REGION import REGION
 
 
 def main():
     with open('key.txt') as f:
         key = f.read()
-    c = RiotApiClient(key, Region.na)
+    c = RiotApiClient(key, REGION.na)
     s = ('Dyrus', 'DoubleLift', 'hi im gosu')
     p = c.search(s)
     p = c.next()
