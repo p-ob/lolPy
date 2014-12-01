@@ -29,6 +29,7 @@ def main():
     p = c.next()
     p = c.next()
     print(c.recent_match_history()[0].get_data_members())
+    test = c.item_data()
 
 
 if __name__ == '__main__':

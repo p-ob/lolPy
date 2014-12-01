@@ -247,7 +247,7 @@ class RiotApiClient:
             return self.client.execute(r).json()
         return self.client.execute_with_return_struct(r)
 
-    def item_data(self, item_id: int=-1, return_json: bool=False) -> Client.Struct:
+    def item_data(self, item_id: int=-1, return_json: bool=False, item_list_data: str='') -> Client.Struct:
         """
 
         :param item_id:
@@ -261,6 +261,8 @@ class RiotApiClient:
             r = Request.Request(urls.item_data)
         r.add_url_parameter('region', self.region)
         r.add_query_parameter('api_key', self.key)
+        if item_list_data:
+            r.add_query_parameter('itemListData', item_list_data)
 
         if return_json or self._return_json:
             return self.client.execute(r).json()
