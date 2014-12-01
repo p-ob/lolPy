@@ -28,7 +28,7 @@ def main():
     p = c.next()
     p = c.next()
     p = c.next()
-    print(c.ranked_match_history().matches[0].get_data_members())
+    print(c.recent_match_history()[0].get_data_members())
 
 
 if __name__ == '__main__':
