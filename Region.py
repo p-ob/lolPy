@@ -17,7 +17,7 @@ __author__ = 'Patrick O\'Brien'
 '''
 
 
-class REGION:
+class Region:
     na = 'na'
     euw = 'euw'
     eune = 'eune'
