@@ -190,12 +190,13 @@ class RiotApiClient:
             return self.client.execute(r).json()
         return self.client.execute_with_return_struct(r)
 
-    def champion_data(self, champion_id: int=-1, return_json: bool=False) -> Client.Struct:
+    def champion_data(self, champion_id: int=-1, return_json: bool=False):
         """
 
         :param champion_id:
         :param return_json: bool that when set to True returns the raw jason object
-        :return:
+        :return: if champion_id is given, returns a Struct; otherwise, a list of Structs; these Structs are each
+            champion data type object
         """
         if champion_id >= 0:
             r = Request.Request(urls.champion_data_by_id)
@@ -207,9 +208,11 @@ class RiotApiClient:
 
         if return_json or self._return_json:
             return self.client.execute(r).json()
+        if champion_id < 0:
+            return getattr(self.client.execute_with_return_struct(r), 'data')
         return self.client.execute_with_return_struct(r)
 
-    def rune_data(self, rune_id: int=-1, return_json: bool=False) -> Client.Struct:
+    def rune_data(self, rune_id: int=-1, return_json: bool=False):
         """
 
         :param rune_id:
@@ -226,9 +229,11 @@ class RiotApiClient:
 
         if return_json or self._return_json:
             return self.client.execute(r).json()
+        if rune_id < 0:
+            return getattr(self.client.execute_with_return_struct(r), 'data')
         return self.client.execute_with_return_struct(r)
 
-    def mastery_data(self, mastery_id: int=-1, return_json: bool=False) -> Client.Struct:
+    def mastery_data(self, mastery_id: int=-1, return_json: bool=False):
         """
 
         :param mastery_id:
@@ -245,9 +250,11 @@ class RiotApiClient:
 
         if return_json or self._return_json:
             return self.client.execute(r).json()
+        if mastery_id < 0:
+            return getattr(self.client.execute_with_return_struct(r), 'data')
         return self.client.execute_with_return_struct(r)
 
-    def item_data(self, item_id: int=-1, return_json: bool=False, item_list_data: str='') -> Client.Struct:
+    def item_data(self, item_id: int=-1, item_list_data: str='', return_json: bool=False):
         """
 
         :param item_id:
@@ -266,9 +273,11 @@ class RiotApiClient:
 
         if return_json or self._return_json:
             return self.client.execute(r).json()
+        if item_id < 0:
+            return getattr(self.client.execute_with_return_struct(r), 'data')
         return self.client.execute_with_return_struct(r)
 
-    def summoner_spell_data(self, summoner_spell_id: int=-1, return_json: bool=False) -> Client.Struct:
+    def summoner_spell_data(self, summoner_spell_id: int=-1, return_json: bool=False):
         """
 
         :param summoner_spell_id:
@@ -285,6 +294,8 @@ class RiotApiClient:
 
         if return_json or self._return_json:
             return self.client.execute(r).json()
+        if summoner_spell_id < 0:
+            return getattr(self.client.execute_with_return_struct(r), 'data')
         return self.client.execute_with_return_struct(r)
 
     def league_data(self, return_json: bool=False) -> Client.Struct:
