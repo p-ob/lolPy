@@ -92,8 +92,8 @@ class RiotApiClient:
         r.add_url_parameter('summonerNames', ','.join(summoner_names))
         r.add_query_parameter('api_key', self.key)
 
-        val = self.client.execute_with_return_struct(r)
-        self.summoners = [getattr(val, s.lower().replace(' ', '')) for s in summoner_names]
+        search_results = self.client.execute_with_return_struct(r)
+        self.summoners = [getattr(search_results, s.lower().replace(' ', '')) for s in summoner_names]
         self.summoner_id = getattr(self.summoners[0], 'id', -1)
         self._current_summoner_index = 0
         if return_json or self._return_json:
