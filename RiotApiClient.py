@@ -36,8 +36,7 @@ class RiotApiClient:
         self.region = region.lower()
         self.key = key
         self.client = Client.Client(urls.base.format(self.region))
-        self.summoner_id = -1
-        self._current_summoner_index = -1
+        self._current_summoner_index = 0
         self.summoners = []
         self._return_json = return_json
 
@@ -48,9 +47,8 @@ class RiotApiClient:
         """
         self.region = region.lower()
         self.summoners = []
-        self.summoner_id = -1
         self.client = Client.Client(urls.base.format(self.region))
-        self._current_summoner_index = -1
+        self._current_summoner_index = 0
 
     def next(self) -> Client.Struct:
         """
@@ -62,7 +60,6 @@ class RiotApiClient:
             raise RiotApiException('RiotApiClient.summoners is not populated; cannot get next summoner.')
 
         self._current_summoner_index += 1
-        self.summoner_id = self.current_summoner.id
         return self.current_summoner
 
     @property
@@ -73,6 +70,10 @@ class RiotApiClient:
         """
         assert isinstance(self.summoners, list)
         return self.summoners[self._current_summoner_index % len(self.summoners)]
+
+    @property
+    def summoner_id(self):
+        return self.current_summoner.id
 
     def search(self, summoner_names, return_json: bool=False) -> Client.Struct:
         """
@@ -94,7 +95,6 @@ class RiotApiClient:
 
         search_results = self.client.execute_with_return_struct(r)
         self.summoners = [getattr(search_results, s.lower().replace(' ', '')) for s in summoner_names]
-        self.summoner_id = getattr(self.summoners[0], 'id', -1)
         self._current_summoner_index = 0
         if return_json or self._return_json:
             return self.client.execute(r).json()
