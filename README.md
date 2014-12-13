@@ -1,4 +1,4 @@
-To use lolPy, you must first create an instance of `RiotApiClient`, which requires an API key from [RiotGames](https://developer.riotgames.com/) and which region you'd like to begin work in. This region can change at any time by using `change_region`, which resets all region-specific data to their default values (e.g. summoner ids are region specific, so the summoner id stored is reset to -1).
+To use lolPy, you must first create an instance of `RiotApiClient`, which requires an API key from [RiotGames](https://developer.riotgames.com/) and which region you'd like to begin work in. This region can change at any time by using `change_region`, which resets all region-specific data to their default values.
 
 Example:  
 `1. list_of_summoner_names = ['Dyrus', 'hi im gosu']`  
