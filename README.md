@@ -24,6 +24,9 @@ For more on how to use lolPy, see the Wiki page for [`RiotApiClient`](https://gi
 
 lolPy requires [restPy](https://github.com/p-ob/restPy/) to function in the new version. restPy requires [xmltodict](https://github.com/martinblech/xmltodict).
 
+For actual implementation, see [lolAnalyzer](https://github.com/p-ob/lolAnalyzer), a tool I'm working on to analyze and store player performance in League of Legends.
+
+=====
 
 lolPy isn't endorsed by Riot Games and doesn't reflect the views or opinions of Riot Games or anyone officially involved
 in producing or managing League of Legends. League of Legends and Riot Games are trademarks or registered trademarks of
