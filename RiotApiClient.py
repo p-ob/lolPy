@@ -298,7 +298,7 @@ class RiotApiClient:
             return getattr(self.client.execute_with_return_struct(r), 'data')
         return self.client.execute_with_return_struct(r)
 
-    def league_data(self, return_json: bool=False) -> Client.Struct:
+    def league_data(self, all_summoners: bool=False, return_json: bool=False) -> Client.Struct:
         """
 
         :param return_json: bool that when set to True returns the raw jason object
@@ -309,11 +309,28 @@ class RiotApiClient:
 
         r = Request.Request(urls.league_data)
         r.add_url_parameter('region', self.region)
-        r.add_url_parameter('summonerIds', self.summoner_id)
+        if all_summoners:
+            summoner_ids = [str(summoner.id) for summoner in self.summoners]
+            r.add_url_parameter('summonerIds', ','.join(summoner_ids))
+        else:
+            summoner_ids = []
+            r.add_url_parameter('summonerIds', self.summoner_id)
         r.add_query_parameter('api_key', self.key)
 
         if return_json or self._return_json:
             return self.client.execute(r).json()
+
+        if all_summoners and summoner_ids:
+            all_league_data = self.client.execute_with_return_struct(r)
+            all_league_data = [getattr(all_league_data, summoner_id, None) for summoner_id in summoner_ids]
+            return_data = []
+            for i in range(len(all_league_data)):
+                this_summoner_id = summoner_ids[i]
+                for this_league_data in all_league_data[i]:
+                    setattr(this_league_data, 'summonerId', this_summoner_id)
+                    return_data += [this_league_data]
+            return return_data
+
         return getattr(self.client.execute_with_return_struct(r), str(self.summoner_id))
 
 
