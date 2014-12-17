@@ -309,8 +309,13 @@ class RiotApiClient:
 
         r = Request.Request(urls.league_data)
         r.add_url_parameter('region', self.region)
+        rest_summoners = []
         if all_summoners:
-            summoner_ids = [str(summoner.id) for summoner in self.summoners]
+            current_summoners = self.summoners
+            if len(self.summoners) > 10:
+                current_summoners = self.summoners[:10]
+                rest_summoners = self.summoners[10:]
+            summoner_ids = [str(summoner.id) for summoner in current_summoners]
             r.add_url_parameter('summonerIds', ','.join(summoner_ids))
         else:
             summoner_ids = []
@@ -326,9 +331,15 @@ class RiotApiClient:
             return_data = []
             for i in range(len(all_league_data)):
                 this_summoner_id = summoner_ids[i]
+                if not all_league_data[i]:
+                    continue
                 for this_league_data in all_league_data[i]:
                     setattr(this_league_data, 'summonerId', this_summoner_id)
                     return_data += [this_league_data]
+            if len(self.summoners) > 10:
+                temp_client = RiotApiClient(self.key, self.region)
+                temp_client.summoners = rest_summoners
+                return_data += temp_client.league_data(all_summoners=True)
             return return_data
 
         return getattr(self.client.execute_with_return_struct(r), str(self.summoner_id))
