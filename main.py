@@ -17,7 +17,6 @@ __author__ = 'Patrick O\'Brien'
 '''
 from RiotApiClient import RiotApiClient
 from Region import Region
-import numpy
 
 
 def main():
