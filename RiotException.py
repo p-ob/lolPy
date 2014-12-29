@@ -15,21 +15,14 @@ __author__ = 'Patrick O\'Brien'
     You should have received a copy of the GNU General Public License
     along with lolPy.  If not, see <http://www.gnu.org/licenses/>.
 '''
-from RiotApiClient import RiotApiClient
-from Region import Region
-import numpy
+from enum import IntEnum
 
 
-def main():
-    with open('key.txt') as f:
-        key = f.read()
-    c = RiotApiClient(key, Region.na)
-    s = ('Dyrus', 'DoubleLift', 'hi im gosu')
-    p = c.search(s)
-
-    m = c.ranked_match_history()
-    print(m)
-
-
-if __name__ == '__main__':
-    main()
+class RiotException(IntEnum):
+    Good = 200
+    BadRequest = 400
+    AccessDenied = 401
+    NotFound = 404
+    RateLimitExceeded = 429
+    InternalServerError = 500
+    ServiceUnavailable = 503
