@@ -19,18 +19,17 @@ from RiotApiClient import RiotApiClient
 from Region import Region
 
 
-def main():
-    with open('key.txt') as f:
-        key = f.read()
-    c = RiotApiClient(key, Region.na)
-    s = ('drunk7irishman')
-    c.search(s)
-
-    matches = c.ranked_match_history()
-    matches.reverse()  # reverse to put most recent, e.g. latest, first
-    last_match = matches[0]
-    print(last_match.participants)
-
-
 if __name__ == '__main__':
+    def main():
+        with open('key.txt') as f:
+            key = f.read()
+        c = RiotApiClient(key, Region.na)
+        s = ('drunk7irishman')
+        c.search(s)
+
+        matches = c.ranked_match_history()
+        matches.reverse()  # reverse to put most recent, e.g. latest, first
+        last_match = matches[0]
+        print(last_match.participants)
+
     main()
