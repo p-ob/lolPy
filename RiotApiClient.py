@@ -15,7 +15,7 @@ __author__ = 'Patrick O\'Brien'
     You should have received a copy of the GNU General Public License
     along with lolPy.  If not, see <http://www.gnu.org/licenses/>.
 '''
-from restPy import *
+import restPy
 from lolPy import urls
 
 
@@ -35,7 +35,7 @@ class RiotApiClient:
         """
         self.region = region.lower()
         self.key = key
-        self.client = Client.Client(urls.base.format(self.region))
+        self.client = restPy.Client.Client(urls.base.format(self.region))
         self._current_summoner_index = 0
         self.summoners = []
         self._return_json = return_json
@@ -47,10 +47,10 @@ class RiotApiClient:
         """
         self.region = region.lower()
         self.summoners = []
-        self.client = Client.Client(urls.base.format(self.region))
+        self.client = restPy.Client.Client(urls.base.format(self.region))
         self._current_summoner_index = 0
 
-    def next(self) -> Client.Struct:
+    def next(self) -> restPy.Client.Struct:
         """
         updates self.summoner_id to the id of the next summoner
         :return: Struct representing the next summoner
@@ -63,7 +63,7 @@ class RiotApiClient:
         return self.current_summoner
 
     @property
-    def current_summoner(self) -> Client.Struct:
+    def current_summoner(self) -> restPy.Client.Struct:
         """
         uses the index of the current summoner to retrieve the summoner Struct
         :return: Struct representing a summoner
@@ -75,7 +75,7 @@ class RiotApiClient:
     def summoner_id(self):
         return self.current_summoner.id
 
-    def search(self, summoner_names, return_json: bool=False) -> Client.Struct:
+    def search(self, summoner_names, return_json: bool=False) -> restPy.Client.Struct:
         """
         populates self.summoners with a list of Structs, each Struct representing a summoner
         :param summoner_names: list of strings or single string representing the summoner names to be searched
@@ -88,7 +88,7 @@ class RiotApiClient:
             raise RiotApiException("Too many summoners. Riot only allows up to 40.")
         elif len(summoner_names) < 1:
             raise RiotApiException("Need at least one summoner.")
-        r = Request.Request(urls.player_by_name)
+        r = restPy.Request.Request(urls.player_by_name)
         r.add_url_parameter('region', self.region)
         r.add_url_parameter('summonerNames', ','.join(summoner_names))
         r.add_query_parameter('api_key', self.key)
@@ -109,7 +109,7 @@ class RiotApiClient:
         if self.summoner_id < 0:
             raise RiotApiException("RiotApiClient.summoner_id is invalid")
 
-        r = Request.Request(urls.ranked_match_history)
+        r = restPy.Request.Request(urls.ranked_match_history)
         r.add_url_parameter('region', self.region)
         r.add_url_parameter('summonerId', self.summoner_id)
         r.add_query_parameter('api_key', self.key)
@@ -127,7 +127,7 @@ class RiotApiClient:
         if self.summoner_id < 0:
             raise RiotApiException("RiotApiClient.summoner_id is invalid")
 
-        r = Request.Request(urls.recent_match_history)
+        r = restPy.Request.Request(urls.recent_match_history)
         r.add_url_parameter('region', self.region)
         r.add_url_parameter('summonerId', self.summoner_id)
         r.add_query_parameter('api_key', self.key)
@@ -136,7 +136,7 @@ class RiotApiClient:
             return self.client.execute(r).json()
         return getattr(self.client.execute_with_return_struct(r), 'games', [])
 
-    def ranked_stats(self, return_json: bool=False) -> Client.Struct:
+    def ranked_stats(self, return_json: bool=False) -> restPy.Client.Struct:
         """
 
         :param return_json: bool that when set to True returns the raw jason object
@@ -145,7 +145,7 @@ class RiotApiClient:
         if self.summoner_id < 0:
             raise RiotApiException("RiotApiClient.summoner_id is invalid")
 
-        r = Request.Request(urls.ranked_stats)
+        r = restPy.Request.Request(urls.ranked_stats)
         r.add_url_parameter('region', self.region)
         r.add_url_parameter('summonerId', self.summoner_id)
         r.add_query_parameter('api_key', self.key)
@@ -154,7 +154,7 @@ class RiotApiClient:
             return self.client.execute(r).json()
         return self.client.execute_with_return_struct(r)
 
-    def summary_stats(self, return_json: bool=False) -> Client.Struct:
+    def summary_stats(self, return_json: bool=False) -> restPy.Client.Struct:
         """
 
         :param return_json: bool that when set to True returns the raw jason object
@@ -163,7 +163,7 @@ class RiotApiClient:
         if self.summoner_id < 0:
             raise RiotApiException("RiotApiClient.summoner_id is invalid")
 
-        r = Request.Request(urls.summary_stats)
+        r = restPy.Request.Request(urls.summary_stats)
         r.add_url_parameter('region', self.region)
         r.add_url_parameter('summonerId', self.summoner_id)
         r.add_query_parameter('api_key', self.key)
@@ -172,7 +172,7 @@ class RiotApiClient:
             return self.client.execute(r).json()
         return self.client.execute_with_return_struct(r)
 
-    def match_details(self, match_id, include_timeline: bool=True, return_json: bool=False) -> Client.Struct:
+    def match_details(self, match_id, include_timeline: bool=True, return_json: bool=False) -> restPy.Client.Struct:
         """
 
         :param match_id:
@@ -180,7 +180,7 @@ class RiotApiClient:
         :param return_json: bool that when set to True returns the raw jason object
         :return:
         """
-        r = Request.Request(urls.match_details)
+        r = restPy.Request.Request(urls.match_details)
         r.add_url_parameter('region', self.region)
         r.add_url_parameter('matchId', match_id)
         r.add_query_parameter('api_key', self.key)
@@ -199,10 +199,10 @@ class RiotApiClient:
             champion data type object
         """
         if champion_id >= 0:
-            r = Request.Request(urls.champion_data_by_id)
+            r = restPy.Request.Request(urls.champion_data_by_id)
             r.add_url_parameter('id', champion_id)
         else:
-            r = Request.Request(urls.champion_data)
+            r = restPy.Request.Request(urls.champion_data)
         r.add_url_parameter('region', self.region)
         r.add_query_parameter('api_key', self.key)
 
@@ -220,10 +220,10 @@ class RiotApiClient:
         :return:
         """
         if rune_id >= 0:
-            r = Request.Request(urls.rune_data_by_id)
+            r = restPy.Request.Request(urls.rune_data_by_id)
             r.add_url_parameter('id', rune_id)
         else:
-            r = Request.Request(urls.rune_data)
+            r = restPy.Request.Request(urls.rune_data)
         r.add_url_parameter('region', self.region)
         r.add_query_parameter('api_key', self.key)
 
@@ -241,10 +241,10 @@ class RiotApiClient:
         :return:
         """
         if mastery_id >= 0:
-            r = Request.Request(urls.mastery_data_by_id)
+            r = restPy.Request.Request(urls.mastery_data_by_id)
             r.add_url_parameter('id', mastery_id)
         else:
-            r = Request.Request(urls.mastery_data)
+            r = restPy.Request.Request(urls.mastery_data)
         r.add_url_parameter('region', self.region)
         r.add_query_parameter('api_key', self.key)
 
@@ -262,10 +262,10 @@ class RiotApiClient:
         :return:
         """
         if item_id >= 0:
-            r = Request.Request(urls.item_data_by_id)
+            r = restPy.Request.Request(urls.item_data_by_id)
             r.add_url_parameter('id', item_id)
         else:
-            r = Request.Request(urls.item_data)
+            r = restPy.Request.Request(urls.item_data)
         r.add_url_parameter('region', self.region)
         r.add_query_parameter('api_key', self.key)
         if item_list_data:
@@ -285,10 +285,10 @@ class RiotApiClient:
         :return:
         """
         if summoner_spell_id >= 0:
-            r = Request.Request(urls.summoner_spell_data_by_id)
+            r = restPy.Request.Request(urls.summoner_spell_data_by_id)
             r.add_url_parameter('id', summoner_spell_id)
         else:
-            r = Request.Request(urls.summoner_spell_data)
+            r = restPy.Request.Request(urls.summoner_spell_data)
         r.add_url_parameter('region', self.region)
         r.add_query_parameter('api_key', self.key)
 
@@ -298,7 +298,7 @@ class RiotApiClient:
             return getattr(self.client.execute_with_return_struct(r), 'data')
         return self.client.execute_with_return_struct(r)
 
-    def league_data(self, all_summoners: bool=False, return_json: bool=False) -> Client.Struct:
+    def league_data(self, all_summoners: bool=False, return_json: bool=False) -> restPy.Client.Struct:
         """
 
         :param return_json: bool that when set to True returns the raw jason object
@@ -307,7 +307,7 @@ class RiotApiClient:
         if self.summoner_id < 0:
             raise RiotApiException("RiotApiClient.summoner_id is invalid")
 
-        r = Request.Request(urls.league_data)
+        r = restPy.Request.Request(urls.league_data)
         r.add_url_parameter('region', self.region)
         rest_summoners = []
         if all_summoners:

@@ -23,11 +23,13 @@ def main():
     with open('key.txt') as f:
         key = f.read()
     c = RiotApiClient(key, Region.na)
-    s = ('Dyrus', 'DoubleLift', 'hi im gosu')
-    p = c.search(s)
+    s = ('drunk7irishman')
+    c.search(s)
 
-    m = c.ranked_match_history()
-    print(m)
+    matches = c.ranked_match_history()
+    matches.reverse()  # reverse to put most recent, e.g. latest, first
+    last_match = matches[0]
+    print(last_match.participants)
 
 
 if __name__ == '__main__':
