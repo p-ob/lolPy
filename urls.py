@@ -52,3 +52,5 @@ item_data = '/api/lol/static-data/{region}/v1.2/item'
 item_data_by_id = item_data + '/{id}'
 
 league_data = '/api/lol/{region}/v2.5/league/by-summoner/{summonerIds}'
+
+current_game = '/observer-mode/rest/consumer/getSpectatorGameInfo/{platformId}/{summonerId}'

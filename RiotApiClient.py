@@ -17,6 +17,9 @@ __author__ = 'Patrick O\'Brien'
 '''
 from restPy import *
 from lolPy import urls
+from RegionId import RegionId
+from PlatformId import PlatformId
+from requests import HTTPError
 
 
 class RiotApiException(Exception):
@@ -343,5 +346,48 @@ class RiotApiClient:
             return return_data
 
         return getattr(self.client.execute_with_return_struct(r), str(self.summoner_id))
+
+    def current_game_data(self, return_json: bool=False):
+        if self.summoner_id < 0:
+            raise RiotApiException("RiotApiClient.summoner_id is invalid")
+
+        r = Request.Request(urls.current_game)
+        r.add_url_parameter('platformId', self.__match_region_to_platform())
+        r.add_url_parameter('summonerId', self.summoner_id)
+        r.add_query_parameter('api_key', self.key)
+
+        if return_json or self._return_json:
+            return self.client.execute(r).json()
+        try:
+            return self.client.execute_with_return_struct(r)
+        except HTTPError as e:
+            # if an HTTPError is thrown with code 404, then they're not in a game
+            if e.response.status_code == 404:
+                return None
+            raise e
+
+    def __match_region_to_platform(self):
+        if self.region == RegionId.na:
+            return PlatformId.na1
+        if self.region == RegionId.br:
+            return PlatformId.br1
+        if self.region == RegionId.eune:
+            return PlatformId.eun1
+        if self.region == RegionId.euw:
+            return PlatformId.euw1
+        if self.region == RegionId.kr:
+            return PlatformId.kr
+        if self.region == RegionId.oce:
+            return PlatformId.oc1
+        if self.region == RegionId.tr:
+            return PlatformId.tr1
+        if self.region == RegionId.lan:
+            return PlatformId.la1
+        if self.region == RegionId.las:
+            return PlatformId.la2
+        if self.region == RegionId.ru:
+            return PlatformId.ru
+
+
 
 

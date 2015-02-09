@@ -15,20 +15,16 @@ __author__ = 'Patrick O\'Brien'
     You should have received a copy of the GNU General Public License
     along with lolPy.  If not, see <http://www.gnu.org/licenses/>.
 '''
-from RiotApiClient import RiotApiClient
-from RegionId import RegionId
 
 
-def main():
-    with open('key.txt') as f:
-        key = f.read()
-    c = RiotApiClient(key, RegionId.na)
-    s = ('AWizzrd', 'DoubleLift', 'hi im gosu')
-    p = c.search(s)
-
-    m = c.current_game_data()
-    print(m)
-
-
-if __name__ == '__main__':
-    main()
+class RegionId:
+    na = 'na'
+    euw = 'euw'
+    eune = 'eune'
+    br = 'br'
+    kr = 'kr'
+    lan = 'lan'
+    las = 'las'
+    oce = 'oce'
+    ru = 'ru'
+    tr = 'tr'
