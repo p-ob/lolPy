@@ -43,6 +43,28 @@ class RiotApiClient:
         self.summoners = []
         self._return_json = return_json
 
+    def _match_region_to_platform(self):
+        if self.region == RegionId.na:
+            return PlatformId.na1
+        if self.region == RegionId.br:
+            return PlatformId.br1
+        if self.region == RegionId.eune:
+            return PlatformId.eun1
+        if self.region == RegionId.euw:
+            return PlatformId.euw1
+        if self.region == RegionId.kr:
+            return PlatformId.kr
+        if self.region == RegionId.oce:
+            return PlatformId.oc1
+        if self.region == RegionId.tr:
+            return PlatformId.tr1
+        if self.region == RegionId.lan:
+            return PlatformId.la1
+        if self.region == RegionId.las:
+            return PlatformId.la2
+        if self.region == RegionId.ru:
+            return PlatformId.ru
+
     def change_region(self, region: str):
         """
         If changing region, be sure to call search again; summoner_id is region specific
@@ -193,7 +215,7 @@ class RiotApiClient:
             return self.client.execute(r).json()
         return self.client.execute_with_return_struct(r)
 
-    def champion_data(self, champion_id: int=-1, return_json: bool=False):
+    def champion_data(self, champion_id: int=-1, return_json: bool=False) -> Client.Struct:
         """
 
         :param champion_id:
@@ -215,7 +237,7 @@ class RiotApiClient:
             return getattr(self.client.execute_with_return_struct(r), 'data')
         return self.client.execute_with_return_struct(r)
 
-    def rune_data(self, rune_id: int=-1, return_json: bool=False):
+    def rune_data(self, rune_id: int=-1, return_json: bool=False) -> Client.Struct:
         """
 
         :param rune_id:
@@ -236,7 +258,7 @@ class RiotApiClient:
             return getattr(self.client.execute_with_return_struct(r), 'data')
         return self.client.execute_with_return_struct(r)
 
-    def mastery_data(self, mastery_id: int=-1, return_json: bool=False):
+    def mastery_data(self, mastery_id: int=-1, return_json: bool=False) -> Client.Struct:
         """
 
         :param mastery_id:
@@ -257,7 +279,7 @@ class RiotApiClient:
             return getattr(self.client.execute_with_return_struct(r), 'data')
         return self.client.execute_with_return_struct(r)
 
-    def item_data(self, item_id: int=-1, item_list_data: str='', return_json: bool=False):
+    def item_data(self, item_id: int=-1, item_list_data: str='', return_json: bool=False) -> Client.Struct:
         """
 
         :param item_id:
@@ -280,7 +302,7 @@ class RiotApiClient:
             return getattr(self.client.execute_with_return_struct(r), 'data')
         return self.client.execute_with_return_struct(r)
 
-    def summoner_spell_data(self, summoner_spell_id: int=-1, return_json: bool=False):
+    def summoner_spell_data(self, summoner_spell_id: int=-1, return_json: bool=False) -> Client.Struct:
         """
 
         :param summoner_spell_id:
@@ -347,12 +369,12 @@ class RiotApiClient:
 
         return getattr(self.client.execute_with_return_struct(r), str(self.summoner_id))
 
-    def current_game_data(self, return_json: bool=False):
+    def current_game_data(self, return_json: bool=False) -> Client.Struct:
         if self.summoner_id < 0:
             raise RiotApiException("RiotApiClient.summoner_id is invalid")
 
         r = Request.Request(urls.current_game)
-        r.add_url_parameter('platformId', self.__match_region_to_platform())
+        r.add_url_parameter('platformId', self._match_region_to_platform())
         r.add_url_parameter('summonerId', self.summoner_id)
         r.add_query_parameter('api_key', self.key)
 
@@ -365,29 +387,6 @@ class RiotApiClient:
             if e.response.status_code == 404:
                 return None
             raise e
-
-    def __match_region_to_platform(self):
-        if self.region == RegionId.na:
-            return PlatformId.na1
-        if self.region == RegionId.br:
-            return PlatformId.br1
-        if self.region == RegionId.eune:
-            return PlatformId.eun1
-        if self.region == RegionId.euw:
-            return PlatformId.euw1
-        if self.region == RegionId.kr:
-            return PlatformId.kr
-        if self.region == RegionId.oce:
-            return PlatformId.oc1
-        if self.region == RegionId.tr:
-            return PlatformId.tr1
-        if self.region == RegionId.lan:
-            return PlatformId.la1
-        if self.region == RegionId.las:
-            return PlatformId.la2
-        if self.region == RegionId.ru:
-            return PlatformId.ru
-
 
 
 

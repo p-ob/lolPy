@@ -23,11 +23,13 @@ def main():
     with open('key.txt') as f:
         key = f.read()
     c = RiotApiClient(key, RegionId.na)
-    s = ('AWizzrd', 'DoubleLift', 'hi im gosu')
+    s = ('nightblue3',)
     p = c.search(s)
 
-    m = c.current_game_data()
-    print(m)
+    for _ in s:
+        m = c.current_game_data()
+        print(m)
+        c.next()
 
 
 if __name__ == '__main__':
