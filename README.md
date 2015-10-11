@@ -4,6 +4,8 @@ To use lolPy, you must first create an instance of `RiotApiClient`, which requir
 
 lolPy 2.0 is written with Python 3.5 and requires [requests](http://docs.python-requests.org/en/latest/). I've commented out some of the code that is used by my project to demonstrate how I've decided to handle errors from Riot's API.
 
+lolPy 1.0 still exists as a branch for those who'd like to use it. It is no longer supported by me though.
+
 =====
 
 lolPy isn't endorsed by Riot Games and doesn't reflect the views or opinions of Riot Games or anyone officially involved
