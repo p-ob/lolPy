@@ -1,32 +1,8 @@
-**lolPy is not currently being updated; if a large number of people come and want to see this API tool be kept up-to-date and supported, I will revisit it.**
+**lolPy was originally made to be more OOP friendly. I treated it like my C# equivalent, and that was both fun and a learning experience. However, that was not very Pythonic, and I've since created a new API client for my own personal project. I've decided to branch the old version (v1.0) which had the dependency on restPy and update this project with the new, more general purpose client.**
 
-To use lolPy, you must first create an instance of `RiotApiClient`, which requires an API key from [RiotGames](https://developer.riotgames.com/) and which region you'd like to begin work in. This region can change at any time by using `change_region`, which resets all region-specific data to their default values.
+To use lolPy, you must first create an instance of `RiotApiClient`, which requires an API key from [RiotGames](https://developer.riotgames.com/). 
 
-Example:  
-`1. list_of_summoner_names = ['Dyrus', 'hi im gosu']`  
-`2. key = 'this-is-an-example'`  
-`3. client = RiotApiClient(key, Region.na)  # Region.na evaluates to 'na'`  
-`4. summoner = client.search(list_of_summoner_names)  # search returns the first summoner in the list of search results; these are stored in RiotApiClient.summoners`  
-`5. print(summoner.name)`  
-`6.    >> 'Dyrus'`  
-`7. summoner = client.next()`  
-`8. print(summoner.name)`  
-`9.    >> 'hi im gosu'`  
-`10. match_history = client.ranked_match_history()  # returns last 10 ranked games for hi im gosu in a list`  
-`11. # what are the attributes stored in match_history[0]??`  
-`12. print(match_history[0].get_data_members())`  
-`13.    >> ['matchType', 'matchVersion', 'region', 'matchId', 'season', 'matchDuration', 'platformId', 'mapId', 'participants', 'matchCreation', 'queueType', 'participantIdentities', 'matchMode']`  
-`14. client.next()  # client will loop back to the beginning of the list once the end has been hit`  
-`15. print(client.current_summoner.name)`  
-`16.   >> 'Dyrus'`  
-
-
-
-For more on how to use lolPy, see the Wiki page for [`RiotApiClient`](https://github.com/p-ob/lolPy/wiki/RiotApiClient) and the other Wiki pages.
-
-lolPy requires [restPy](https://github.com/p-ob/restPy/) to function in the new version. restPy requires [xmltodict](https://github.com/martinblech/xmltodict).
-
-For actual implementation, see [lolAnalyzer](https://github.com/p-ob/lolAnalyzer), a tool I'm working on to analyze and store player performance in League of Legends.
+lolPy 2.0 is written with Python 3.5 and requires [requests](http://docs.python-requests.org/en/latest/). I've commented out some of the code that is used by my project to demonstrate how I've decided to handle errors from Riot's API.
 
 =====
 
