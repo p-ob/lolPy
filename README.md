@@ -6,7 +6,7 @@ lolPy 2.0 is written with Python 3.5 and requires [requests](http://docs.python-
 
 lolPy 1.0 still exists as a branch for those who'd like to use it. It is no longer supported by me though.
 
-**The wiki is still outdated, and is only relevant to 1.0.**
+**The wiki is still WIP for this new version.**
 
 =====
 
